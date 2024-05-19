@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <link href="css/options.css" rel="stylesheet" type="text/css" />
+        <link href="css/fontawesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/solid.min.css" rel="stylesheet" type="text/css" />
+        <script src="js/jquery.min.js"></script>
+        <script src="js/options.js"></script>
+    </head>
+
+    <body>
+        <section>
+            <h1 data-string="options-h1-basic" />
+            <div class="row">
+                <div class="flex-left" data-string="options-homeURL" />
+                <div class="flex-right"><input id="homeURL" class="w-100" /></div>
+            </div>
+            <div class="row">
+                <div class="flex-left" data-string="options-defaultScale" />
+                <div class="flex-right">
+                    <select id="defaultScale">
+                        <option value="50" >50%</option>
+                        <option value="60" >60%</option>
+                        <option value="70" >70%</option>
+                        <option value="80" >80%</option>
+                        <option value="90" >90%</option>
+                        <option value="100">100%</option>
+                        <option value="110">110%</option>
+                        <option value="120">120%</option>
+                        <option value="130">130%</option>
+                        <option value="140">140%</option>
+                        <option value="150">150%</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <input id="appendHttps" type="checkbox" />
+                <label for="appendHttps" data-string="options-appendHttps" />
+            </div>
+            <div class="row">
+                <input id="xdomainTransition" type="checkbox" />
+                <label for="xdomainTransition" data-string="options-xdomainTransition" />
+                <div class="w-100 pre-wrap indent-1 row">
+                    <div data-string="options-xdomainTransition-description" />
+                </div>
+            </div>
+            <div class="row">
+                <input id="webrequestHeaderChangingUseragent" type="checkbox" />
+                <label for="webrequestHeaderChangingUseragent" data-string="options-webrequestHeaderChangingUseragent" />
+                <div class="w-100 indent-1">
+                    <a data-string="options-ua" />:&#160;
+                    <input id="useragent" class="flex-grow" />
+                </div>
+            </div>
+        </section>
+        <section>
+            <h1 data-string="options-h1-advanced" />
+            <div class="row">
+                <input id="webrequestHeaderCleaningAll" type="checkbox" />
+                <label for="webrequestHeaderCleaningAll" data-string="options-webrequestHeaderCleaningAll" />
+                <div class="w-100 pre-wrap indent-1 row">
+                    <h3 data-string="options-webrequestHeaderCleaningAll-description-sec1-title" />
+                    <div data-string="options-webrequestHeaderCleaningAll-description-sec1" />
+                    <h4 data-string="options-webrequestHeaderCleaningAll-description-sec2-title" />
+                    <div data-string="options-webrequestHeaderCleaningAll-description-sec2" />
+                    <h4 data-string="options-webrequestHeaderCleaningAll-description-sec3-title" />
+                    <div data-string="options-webrequestHeaderCleaningAll-description-sec3" />
+                    <h4 data-string="options-webrequestHeaderCleaningAll-description-sec4-title" />
+                    <div data-string="options-webrequestHeaderCleaningAll-description-sec4" />
+                    <div data-string="options-webrequestHeaderCleaningAll-description-sec5" />
+                    <div class="w-100">&#160;</div>
+                    <button id="unregister" data-string="options-unregister-button" />
+                    <div class="row w-100 pre-wrap indent-1" data-string="options-unregister" />
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

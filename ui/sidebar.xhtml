@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <link href="css/common.css" rel="stylesheet" type="text/css" />
+        <link href="css/fontawesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/solid.min.css" rel="stylesheet" type="text/css" />
+        <script src="js/jquery.min.js"></script>
+        <script src="js/sidebar.js"></script>
+    </head>
+
+    <body>
+        <div id="popup-webrequestHeaderCleaningAll" class="popup-panel" style="display: none;">
+            <p class="pre-wrap" data-string="webrequestHeaderCleaningAll-description" />
+            <img src="images/frame-error-message.png" />
+            <div class="spacer" />
+            <p><button class="w-100 close-dialog" tabindex="1" data-string="webrequestHeaderCleaningAll-accept" /></p>
+            <p><button class="w-100 open-option" tabindex="1" data-string="webrequestHeaderCleaningAll-option" /></p>
+        </div>
+
+        <div id=""
+             class="panel browser-panel template"
+             data-inner-frameid=""
+             data-loading="false">
+
+            <div class="bar navigation-bar">
+                <button class="prev" tabindex="1" data-string-title="title-naviPrev">
+                    <i class="fa-solid fa-fw fa-chevron-left" />
+                </button>
+                <button class="next" tabindex="1" data-string-title="title-naviNext">
+                    <i class="fa-solid fa-fw fa-chevron-right" />
+                </button>
+                <button class="home" tabindex="1" data-string-title="title-naviHome">
+                    <i class="fa-solid fa-fw fa-house" />
+                </button>
+                <button class="refresh" tabindex="1" data-string-title="title-naviRefresh">
+                    <i class="fa-solid fa-fw fa-rotate-right" />
+                    <i class="fa-solid fa-fw fa-xmark" />
+                </button>
+                <div class="bar address-bar">
+                    <input class="textbox address" tabindex="1" />
+                    <button class="run" tabindex="1" data-string-title="title-naviRun">
+                        <i class="fa-solid fa-fw fa-arrow-right" />
+                    </button>
+                </div>
+                <button class="menu" tabindex="1">
+                    <i class="fa-solid fa-fw fa-bars" />
+                </button>
+            </div>
+
+            <div class="menu-container" style="display: none;">
+                <div class="menu-item bar scale-bar">
+                    <button class="scale-minus" tabindex="1" data-string-title="title-naviZoomout">
+                        <i class="fa-solid fa-fw fa-minus" />
+                    </button>
+                    <div class="scale">100</div>
+                    <button class="scale-plus" tabindex="1" data-string-title="title-naviZoomin">
+                        <i class="fa-solid fa-fw fa-plus" />
+                    </button>
+                </div>
+                <button class="menu-item open-option" tabindex="1" data-string-title="title-naviOpenOption">
+                    <i class="fa-solid fa-fw fa-gear" />
+                    <span data-string="openOption" />
+                </button>
+            </div>
+
+            <div class="browser-container">
+                <iframe class="browser" data-scale="100"
+                        referrerpolicy="no-referrer"
+                        src="inline-browser.xhtml"></iframe>
+            </div>
+
+        </div> <!-- /.browser-panel -->
+    </body>
+</html>

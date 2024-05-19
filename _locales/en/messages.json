@@ -1,0 +1,131 @@
+{
+    //
+    // Addon info
+    //
+    "extensionName" : {
+        "message" : "Side Browser"
+    },
+    "extensionDescription" : {
+        "message" : "Browse websites in a Sidebar"
+    },
+
+    //
+    // sidebar.xhtml
+    //
+    "webrequestHeaderCleaningAll-description" : {
+        "message" : "Thank you for using Side Browser.\nWhile using Side Browser, the following message may appear. To resolve this, please refer to the \"Notes on Rewrite all response headers\" in the options page."
+    },
+    "webrequestHeaderCleaningAll-accept" : {
+        "message" : "Got it"
+    },
+    "webrequestHeaderCleaningAll-option" : {
+        "message" : "Open options page"
+    },
+    "openOption" : {
+        "message" : "Options"
+    },
+    "title-naviPrev" : {
+        "message" : "Prev"
+    },
+    "title-naviNext" : {
+        "message" : "Next"
+    },
+    "title-naviHome" : {
+        "message" : "Home"
+    },
+    "title-naviRefresh" : {
+        "message" : "Refresh"
+    },
+    "title-naviRun" : {
+        "message" : "Go"
+    },
+    "title-naviZoomout" : {
+        "message" : "Zoom out"
+    },
+    "title-naviZoomin" : {
+        "message" : "Zoom in"
+    },
+    "title-naviOpenOption" : {
+        "message" : "Open options page"
+    },
+
+    //
+    // options.xhtml
+    //
+    "options-h1-basic" : {
+        "message" : "Basic Preference"
+    },
+    "options-homeURL" : {
+        "message" : "Homepage URL"
+    },
+    "options-defaultScale" : {
+        "message" : "Initial zoon ratio on starting Side Browser"
+    },
+    "options-appendHttps" : {
+        "message" : "Append https:// instead of http:// if no scheme is specified."
+    },
+    "options-xdomainTransition" : {
+        "message" : "Allow transitions to linked URLs with different domain names."
+    },
+    "options-xdomainTransition-description" : {
+        "message" : "If unchecked, these URLs will open in the tab.\nIf checked, transitions will occur inside Side Browser, but referers will not be set."
+    },
+    "options-webrequestHeaderChangingUseragent" : {
+        "message" : "Replace User-Agent header."
+    },
+    "options-ua" : {
+        "message" : "User-Agent"
+    },
+    "options-h1-advanced" : {
+        "message" : "Advanced Preference"
+    },
+    "options-webrequestHeaderCleaningAll" : {
+        "message" : "Rewrite all response headers."
+    },
+    "options-webrequestHeaderCleaningAll-description-sec1-title" : {
+        "message" : "Notes on \"Rewrite all response headers\""
+    },
+    "options-webrequestHeaderCleaningAll-description-sec1" : {
+        "message" : "Side Browser uses the iframe tag so removes the X-Frame-Options header from the response to the request made within Side Browser in order to display pages that are prohibited from being embedded in frames.\nHowever some websites use service workers to retrieve pages, Side Browser can't remove the X-Frame-Options header by using normal method.\n\n"
+    },
+    "options-webrequestHeaderCleaningAll-description-sec2-title" : {
+        "message" : "To load these websites in Side Browser:"
+    },
+    "options-webrequestHeaderCleaningAll-description-sec2" : {
+        "message" : "Removing the service worker's X-Frame-Options response header, it is able to load these websites.\nBut since service worker communication occurs in a place unrelated to the Side Browser, removing all service workers' X-Frame-Options response headers is required.\n\n"
+    },
+    "options-webrequestHeaderCleaningAll-description-sec3-title" : {
+        "message" : "Side Browser performs the following process to delete all service workers' X-Frame-Options response headers."
+    },
+    "options-webrequestHeaderCleaningAll-description-sec3" : {
+        "message" : "1. Unregister all service workers at once.\n2. From now on, remove the X-Frame-Options response headers for newly created service workers.\n\n"
+    },
+    "options-webrequestHeaderCleaningAll-description-sec4-title" : {
+        "message" : "This process has the following risks:"
+    },
+    "options-webrequestHeaderCleaningAll-description-sec4" : {
+        "message" : "- This allows other domains' (malicious) web pages to embed pages that are prohibited from being embedded in frames.\n\n"
+    },
+    "options-webrequestHeaderCleaningAll-description-sec5" : {
+        "message" : "If you understand this risk and want to remove response headers, check \"Rewrite all response headers\". By checking the box, the above two processes will be performed."
+    },
+    "options-unregister" : {
+        "message" : "Run this when there are web pages that cannot be displayed, such as when Side Browser has been disabled for a while."
+    },
+    "options-unregister-button" : {
+        "message" : "Unregister all service workers"
+    },
+
+    //
+    // options.js
+    //
+    "confirmChanging-confirm" : {
+        "message" : "Do you want to change the settings after reading the \"Notes on Rewrite all response headers\" and understanding the risks?"
+    },
+    "unregister-confirm" : {
+        "message" : "Unregister all service workers?"
+    },
+    "unregister-alert" : {
+        "message" : "Unregistered"
+    }
+}

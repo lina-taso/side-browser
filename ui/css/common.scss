@@ -1,0 +1,264 @@
+@charset "UTF-8";
+@namespace html url(http://www.w3.org/1999/xhtml);
+
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    font-size: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+}
+
+p, img {
+    margin-bottom: 0.2em;
+    line-height: 1.3;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    min-height: 24px;
+    &:hover {
+        background-color: darkgray;
+    }
+}
+
+.fa-solid {
+    font-size: 16px;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+.pre-wrap {
+    white-space: pre-wrap;
+}
+
+.template {
+    display: none !important;
+}
+
+.browser-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.bar {
+    display: flex;
+    flex-direction: row;
+
+    > * {
+        margin-left: .5px;
+        margin-right: .5px;
+    }
+    > *:first-child {
+        margin-left: 1px;
+    }
+    > *:last-child {
+        margin-right: 1px;
+    }
+
+    > .bar {
+        > *:first-child {
+            margin-left: .5px;
+        }
+        > *:last-child {
+            margin-right: .5px;
+        }
+    }
+}
+
+.navigation-bar {
+    margin-top: 1px;
+
+    button {
+        width: 24px;
+    }
+    .prev {
+    }
+    .next {
+    }
+    .refresh {
+        .browser-panel[data-loading="false"] & {
+            .fa-xmark {
+                display: none;
+            }
+        }
+        .browser-panel[data-loading="true"] & {
+            .fa-rotate-right {
+                display: none;
+            }
+        }
+    }
+    .menu {
+    }
+}
+
+.address-bar {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+
+    .address {
+        flex: 1;
+        width: 48px;
+        height: 24px;
+        padding: 2px;
+        border: 1px solid gray;
+        border-radius: 4px;
+    }
+    .run::before {
+    }
+}
+
+.browser-container {
+    display: flex;
+    flex: 1;
+    padding: 1px;
+}
+.browser {
+    flex-shrink: 0;
+    border: 1px solid gray;
+    width: 100%;
+    height: 100%;
+    transform-origin: top left;
+
+    &[data-scale="50"] {
+        transform:    scale(0.5);
+        width:  calc(100% / 0.5);
+        height: calc(100% / 0.5);
+    }
+    &[data-scale="60"] {
+        transform:    scale(0.6);
+        width:  calc(100% / 0.6);
+        height: calc(100% / 0.6);
+    }
+    &[data-scale="70"] {
+        transform:    scale(0.7);
+        width:  calc(100% / 0.7);
+        height: calc(100% / 0.7);
+    }
+    &[data-scale="80"] {
+        transform:    scale(0.8);
+        width:  calc(100% / 0.8);
+        height: calc(100% / 0.8);
+    }
+    &[data-scale="90"] {
+        transform:    scale(0.9);
+        width:  calc(100% / 0.9);
+        height: calc(100% / 0.9);
+    }
+    &[data-scale="110"] {
+        transform:    scale(1.1);
+        width:  calc(100% / 1.1);
+        height: calc(100% / 1.1);
+    }
+    &[data-scale="120"] {
+        transform:    scale(1.2);
+        width:  calc(100% / 1.2);
+        height: calc(100% / 1.2);
+    }
+    &[data-scale="130"] {
+        transform:    scale(1.3);
+        width:  calc(100% / 1.3);
+        height: calc(100% / 1.3);
+    }
+    &[data-scale="140"] {
+        transform:    scale(1.4);
+        width:  calc(100% / 1.4);
+        height: calc(100% / 1.4);
+    }
+    &[data-scale="150"] {
+        transform:    scale(1.5);
+        width:  calc(100% / 1.5);
+        height: calc(100% / 1.5);
+    }
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    top: 28px;
+    right: 2px;
+    z-index: 10;
+    padding: 2px;
+
+    background-color: white;
+    cursor: default;
+    border-radius: 2px;
+    box-shadow: black 2px 2px 6px;
+
+    .menu-item {
+        margin: 2px;
+    }
+    .scale-bar {
+        align-items: center;
+        justify-content: center;
+
+        button {
+            width: 24px;
+        }
+        .scale {
+            margin: 0 2px;
+            min-width: 4em;
+            text-align: center;
+            &::after {
+                content: '%';
+            }
+        }
+    }
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+.popup-panel {
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80vw;
+    min-height: 10vh;
+    max-height: 70vh;
+    transform: translate(-50%, -50%);
+
+    padding: 8px 10px;
+    border: 2px gray solid;
+    border-radius: 4px;
+    background-color: white;
+
+    box-shadow: black 2px 2px 6px;
+    overflow-x: auto;
+
+    > * {
+        margin: 2px 0;
+    }
+    > img {
+        border-radius: 10px;
+    }
+}
