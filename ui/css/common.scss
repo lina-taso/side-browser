@@ -115,6 +115,7 @@ button {
 }
 
 .address-bar {
+    position: relative;
     display: flex;
     flex-direction: row;
     flex: 1;
@@ -124,10 +125,25 @@ button {
         width: 48px;
         height: 24px;
         padding: 2px;
+        color: gray;
         border: 1px solid gray;
         border-radius: 4px;
     }
     .run::before {
+    }
+    .copied {
+        position: absolute;
+        top: 0;
+        right: 26px;
+        display: flex;
+        height: 24px;
+        align-items: center;
+    }
+    .copy-url {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: transparent;
     }
 }
 

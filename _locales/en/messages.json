@@ -3,10 +3,10 @@
     // Addon info
     //
     "extensionName" : {
-        "message" : "Side Browser"
+        "message" : "Side X Browser"
     },
     "extensionDescription" : {
-        "message" : "Browse websites in a Sidebar"
+        "message" : "Browse X (Formerly Twitter) in a Sidebar"
     },
 
     //

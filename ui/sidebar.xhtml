@@ -24,12 +24,14 @@
              data-loading="false">
 
             <div class="bar navigation-bar">
+                <!--
                 <button class="prev" tabindex="1" data-string-title="title-naviPrev">
                     <i class="fa-solid fa-fw fa-chevron-left" />
                 </button>
                 <button class="next" tabindex="1" data-string-title="title-naviNext">
                     <i class="fa-solid fa-fw fa-chevron-right" />
                 </button>
+                -->
                 <button class="home" tabindex="1" data-string-title="title-naviHome">
                     <i class="fa-solid fa-fw fa-house" />
                 </button>
@@ -38,11 +40,20 @@
                     <i class="fa-solid fa-fw fa-xmark" />
                 </button>
                 <div class="bar address-bar">
-                    <input class="textbox address" tabindex="1" />
+                    <div class="textbox address" tabindex="1" />
+                    <div class="copied" style="display:none;">copied!</div>
+                    <button class="copy-url" tabindex="1" data-string-title="title-copyUrl">
+                        <i class="fa-solid fa-fw fa-copy" tabindex="1" />
+                    </button>
+                    <!--
                     <button class="run" tabindex="1" data-string-title="title-naviRun">
                         <i class="fa-solid fa-fw fa-arrow-right" />
                     </button>
+                    -->
                 </div>
+                <button class="share" tabindex="1">
+                    <i class="fa-solid fa-fw fa-share-nodes" />
+                </button>
                 <button class="menu" tabindex="1">
                     <i class="fa-solid fa-fw fa-bars" />
                 </button>

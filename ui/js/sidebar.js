@@ -126,6 +126,7 @@ class frameUI {
         this._browserIframe = this._iframeWindow.document.getElementById('inline-browser');
         this._browserWindow = this._browserIframe.contentWindow;
         this._$menuContainer= $panel.find('.menu-container');
+        this._$copied       = $panel.find('.copied');
         this._$scale        = $panel.find('.scale');
 
         // ボタンイベント
@@ -133,6 +134,7 @@ class frameUI {
         this._$panel.find('button.next').on('click', () => { this.next(); });
         this._$panel.find('button.home').on('click', () => { this.home(); });
         this._$panel.find('button.refresh').on('click', () => { this.refresh(); });
+        this._$panel.find('button.copy-url').on('click', () => { this.copyUrl(); });
         this._$panel.find('button.run').on('click', () => { this.run(); });
         this._$panel.find('button.menu').on('click', e => { this.menu(e); });
         this._$panel.find('button.scale-minus').on('click', e => { this.scaleMinus(e); });
@@ -166,7 +168,7 @@ class frameUI {
 
     // アドレスバー更新
     set href(address) {
-        this._$panel.find('.address').val(address);
+        this._$panel.find('.address').text(address);
     }
     // アドレスバー更新後読み込み
     set hrefLoad(address) {
@@ -175,7 +177,7 @@ class frameUI {
     }
     // アドレスバー取得
     get href() {
-        return this._$panel.find('.address').val();
+        return this._$panel.find('.address').text();
     }
     // 読み込み中設定
     set _loading(bool) {
@@ -215,6 +217,13 @@ class frameUI {
         if (!/^\w+:\/\//.test(url) && !/^about:/.test(url))
             url = (bg.config.getPref('appendHttps') ? 'https://' : 'http://') + url;
         this.hrefLoad = url;
+    }
+    // URLコピー
+    copyUrl() {
+        navigator.clipboard.writeText(this._$panel.find('.address').text()).then(
+            () => {
+                this._$copied.stop(true, true).fadeIn(200).delay(400).fadeOut(200);
+            });
     }
     // メニューボタン
     menu(e) {

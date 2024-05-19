@@ -3,10 +3,10 @@
     // Addon info
     //
     "extensionName" : {
-        "message" : "Side Browser"
+        "message" : "Side X Browser"
     },
     "extensionDescription" : {
-        "message" : "サイドバーでブラウジングします"
+        "message" : "サイドバーでX（旧 Twitter）をブラウジングします"
     },
 
     //

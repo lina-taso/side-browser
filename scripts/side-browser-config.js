@@ -51,7 +51,7 @@ const defaultconfig = {
     // popup
     'popup-webrequestHeaderCleaningAll' : false,
     // options
-    homeURL : 'about:blank',
+    homeURL : 'https://x.com/',
     defaultScale : 100,
     appendHttps : true,
     xdomainTransition : false,
@@ -59,7 +59,7 @@ const defaultconfig = {
     useragent : '',
     webrequestHeaderCleaningAll : false,
     // debug options
-    changeScreen : false,
+    changeScreen : true,
     changeScreenWidth : 400,
     changeScreenHeight : 800,
     changeUseragent : false,

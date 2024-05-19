@@ -125,3 +125,7 @@ const checkClickEvent = (e) => {
 
     return true;
 };
+
+const composeTweet = () => {
+    $('[href="/compose/post"]').click();
+};
