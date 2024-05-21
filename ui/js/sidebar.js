@@ -136,6 +136,7 @@ class frameUI {
         this._$panel.find('button.refresh').on('click', () => { this.refresh(); });
         this._$panel.find('button.copy-url').on('click', () => { this.copyUrl(); });
         this._$panel.find('button.run').on('click', () => { this.run(); });
+        this._$panel.find('button.share').on('click', () => { this.share(); });
         this._$panel.find('button.menu').on('click', e => { this.menu(e); });
         this._$panel.find('button.scale-minus').on('click', e => { this.scaleMinus(e); });
         this._$panel.find('button.scale-plus').on('click', e => { this.scalePlus(e); });
@@ -224,6 +225,15 @@ class frameUI {
             () => {
                 this._$copied.stop(true, true).fadeIn(200).delay(400).fadeOut(200);
             });
+    }
+    // ページ共有
+    share() {
+        browser.tabs.query({ active : true }).then((tabs) => {
+            bg.console.log(tabs);
+            this.hrefLoad = 'https://x.com/compose/post?'
+                + 'text=' + encodeURIComponent(tabs[0].title)
+                + '&url=' + encodeURIComponent(tabs[0].url);
+        });
     }
     // メニューボタン
     menu(e) {
