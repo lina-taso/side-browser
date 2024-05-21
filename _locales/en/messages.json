@@ -39,6 +39,12 @@
     "title-naviRun" : {
         "message" : "Go"
     },
+    "title-copyUrl" : {
+        "message" : "Copy URL"
+    },
+    "title-share" : {
+        "message" : "Share current page"
+    },
     "title-naviZoomout" : {
         "message" : "Zoom out"
     },
