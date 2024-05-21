@@ -12,6 +12,7 @@ let loaded  = false,
     init    = false,
     observe = false,
     oldHref;
+let autoUpdateTimer;
 
 const onload = () => {
     if (init) {
@@ -46,6 +47,15 @@ const observer = new MutationObserver(mutations => {
             frameId : frameId,
             type    : 'url_change',
             url     : oldHref });
+    }
+
+    // Twitter自動更新
+    if (oldHref === 'https://x.com/home') {
+        clearInterval(autoUpdateTimer);
+        autoUpdateTimer = setInterval(updateTimeline, 2000);
+    }
+    else {
+        clearInterval(autoUpdateTimer);
     }
 });
 
@@ -126,6 +136,10 @@ const checkClickEvent = (e) => {
     return true;
 };
 
-const composeTweet = () => {
-    $('[href="/compose/post"]').click();
+const updateTimeline = () => {
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "." }));
+    //browser.runtime.sendMessage({
+    //    type : 'log',
+    //    message : 'update'
+    //});
 };
