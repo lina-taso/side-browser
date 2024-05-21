@@ -58,6 +58,7 @@
         "webRequest",
         "webRequestBlocking",
         "storage",
+        "tabs",
         "<all_urls>"
     ]
 }
