@@ -85,7 +85,9 @@ button {
     padding: 2px;
     color: gray;
     border: 1px solid gray;
-    border-radius: 4px; }
+    border-radius: 4px;
+    word-break: break-all;
+    overflow: hidden; }
   .address-bar .copied {
     position: absolute;
     top: 0;
