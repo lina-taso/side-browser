@@ -51,9 +51,19 @@ const localization = () => {
 // ダイアログ表示済み
 function initDialog()
 {
-    // popup-webrequestHeaderCleaningAll
-    if (!bg.config.getPref('popup-webrequestHeaderCleaningAll')) {
-        $('#popup-webrequestHeaderCleaningAll').fadeIn();
+    try {
+        // popup-webrequestHeaderCleaningAll
+        if (!bg.config.getPref('popup-webrequestHeaderCleaningAll')) {
+            $('#popup-webrequestHeaderCleaningAll').fadeIn();
+        }
+    } catch (e) {
+        // retry
+        setTimeout(() => {
+            // popup-webrequestHeaderCleaningAll
+            if (!bg.config.getPref('popup-webrequestHeaderCleaningAll')) {
+                $('#popup-webrequestHeaderCleaningAll').fadeIn();
+            }
+        }, 1000);
     }
 }
 
