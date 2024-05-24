@@ -159,8 +159,13 @@ var startHeaderCleaning = () => {
         // レスポンス受信時（スクリプト）
         browser.webRequest.onHeadersReceived.addListener(
             webrequestHeaderCleaningAll,
+/*
             { urls : [ '<all_urls>' ],
               types : [ 'sub_frame', 'script', 'xmlhttprequest' ],
+              tabId : -1 // タブ以外
+*/
+            { urls : [ 'https://x.com/*' ],
+              types : [ 'sub_frame', 'xmlhttprequest' ],
               tabId : -1 // タブ以外
             },
             [ 'blocking', 'responseHeaders' ]
@@ -206,6 +211,9 @@ var startHeaderChanging = () => {
 
 // コンフィグ取得・取得後処理
 config.initialize().then(() => {
+    // unregister service worker
+    browser.browsingData.remove({ hostnames : ['twitter.com', 'x.com'] }, { serviceWorkers: true });
+
     startHeaderCleaning();
     startHeaderChanging();
 });

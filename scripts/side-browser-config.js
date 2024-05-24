@@ -57,7 +57,7 @@ const defaultconfig = {
     xdomainTransition : false,
     webrequestHeaderChangingUseragent : false,
     useragent : '',
-    webrequestHeaderCleaningAll : false,
+    webrequestHeaderCleaningAll : true,
     // debug options
     changeScreen : true,
     changeScreenWidth : 400,
