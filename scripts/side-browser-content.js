@@ -137,9 +137,11 @@ const checkClickEvent = (e) => {
 };
 
 const updateTimeline = () => {
-    document.dispatchEvent(new KeyboardEvent("keydown", { key: "." }));
-    //browser.runtime.sendMessage({
-    //    type : 'log',
-    //    message : 'update'
-    //});
+    if (window.scrollY !== 0) return;
+
+    document.querySelector('[href="/home"]').click();
+    browser.runtime.sendMessage({
+        type : 'log',
+        message : 'update'
+    });
 };
