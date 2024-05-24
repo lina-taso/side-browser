@@ -187,7 +187,7 @@ const webrequestHeaderChangingUseragent = details => {
     return { requestHeaders : headers };
 };
 
-// ヘッダー削除開始
+// ヘッダー書き換え開始
 var startHeaderChanging = () => {
     browser.webRequest.onBeforeSendHeaders.removeListener(webrequestHeaderChangingUseragent);
 
