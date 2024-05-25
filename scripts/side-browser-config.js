@@ -49,7 +49,7 @@ var config = {
 
 const defaultconfig = {
     // popup
-    'popup-webrequestHeaderCleaningAll' : false,
+    'popup-webrequestHeaderCleaningAll' : true,
     // options
     homeURL : 'https://x.com/',
     defaultScale : 100,
