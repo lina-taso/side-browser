@@ -11,6 +11,8 @@ const frameId  = parseInt(browser.runtime.getFrameId(window)),
 let loaded  = false,
     init    = false,
     observe = false,
+    updateInterval = 600,
+    removeAds      = false,
     oldHref;
 let autoUpdateTimer;
 
@@ -86,6 +88,10 @@ if (frameId !== 0, parentId !== 0) {
             if (res.xdomainTransition) {
                 document.addEventListener('click', checkClickEvent, true);
             }
+            // 自動更新
+            updateInterval = res.timelineUpdateInterval;
+            // 広告削除
+            removeAds      = res.timelineRemoveAds;
 
             // 読み込み済み
             if (loaded) onload();

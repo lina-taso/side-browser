@@ -41,6 +41,9 @@ function message(message, sender, sendResponse)
                 useragent         : config.getPref('useragent') || navigator.userAgent,
                 xdomainTransition : config.getPref('xdomainTransition')
             };
+            // for side-twitter
+            res.timelineUpdateInterval = config.getPref('timelineUpdateInterval');
+            res.timelineRemoveAds      = config.getPref('timelineRemoveAds');
             // 親フレーム
             if (FRAMES[message.frameId]) {
                 sendResponse(res);
