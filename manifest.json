@@ -18,8 +18,8 @@
     "default_locale" : "en",
 
     "icons" : {
-        "48" : "images/sidebrowser-logo.svg",
-        "96" : "images/sidebrowser-logo.svg"
+        "48" : "images/side-x-browser-logo.svg",
+        "96" : "images/side-x-browser-logo.svg"
     },
 
     "options_ui" : {
@@ -42,14 +42,14 @@
 
     "sidebar_action" : {
         "browser_style" : false,
-        "default_icon" : "images/sidebrowser-logo.svg",
+        "default_icon" : "images/side-x-browser-logo.svg",
         "default_title" : "__MSG_extensionName__",
         "default_panel" : "ui/sidebar.xhtml"
     },
 
     "browser_action" : {
         "browser_style" : false,
-        "default_icon" : "images/sidebrowser-logo.svg",
+        "default_icon" : "images/side-x-browser-logo.svg",
         "default_title" : "__MSG_extensionName__"
     },
 
