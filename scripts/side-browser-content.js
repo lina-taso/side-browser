@@ -62,7 +62,7 @@ const observer = new MutationObserver(mutations => {
 
     // 広告削除
     if (removeAds) {
-        document.querySelectorAll('[data-testid=placementTracking]').forEach((ele)=>{
+        document.querySelectorAll('[data-testid=placementTracking]:has([data-testid=top-impression-pixel])').forEach((ele)=>{
             ele.parentElement.parentElement.parentElement.style.display = 'none';
         });
     }
