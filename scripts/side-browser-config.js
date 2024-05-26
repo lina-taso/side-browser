@@ -58,6 +58,10 @@ const defaultconfig = {
     webrequestHeaderChangingUseragent : false,
     useragent : '',
     webrequestHeaderCleaningAll : true,
+    // for side-twitter
+    timelineAutoUpdate : true,
+    timelineUpdateInterval : 600,
+    timelineRemoveAds : true,
     // debug options
     changeScreen : true,
     changeScreenWidth : 400,
