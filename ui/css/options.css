@@ -41,3 +41,6 @@ html, body {
     border-left: 4px solid lightgray;
     padding-left: 4px;
 }
+#timelineUpdateInterval {
+    width: 5em;
+}

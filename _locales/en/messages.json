@@ -82,6 +82,21 @@
     "options-ua" : {
         "message" : "User-Agent"
     },
+    "options-timelineAutoUpdate" : {
+        "message" : "Update the home timeline automatically on the active window."
+    },
+    "options-timelineUpdateInterval" : {
+        "message" : "(*) Update interval (seconds)"
+    },
+    "options-timelineUpdateInterval-description" : {
+        "message" : "Please note that if you make the update interval too short, you will quickly reach the daily timeline acquisition limit."
+    },
+    "options-timelineRemoveAds" : {
+        "message" : "(*) Remove advertisements from the timeline."
+    },
+    "options-reloadRequired" : {
+        "message" : "(*)... To apply settings refreshing the page is required by clicking Home or Refresh buttons of Side X Browser."
+    },
     "options-h1-advanced" : {
         "message" : "Advanced Preference"
     },

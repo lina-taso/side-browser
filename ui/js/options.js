@@ -37,6 +37,8 @@ const restorePrefs = () => {
 const initPrefs = () => {
     $('#useragent').prop('disabled', !bg.config.getPref('webrequestHeaderChangingUseragent'));
     if (!$('#useragent').val()) $('#useragent').val(navigator.userAgent);
+    // for side-twitter
+    $('#timelineUpdateInterval').prop('disabled', !bg.config.getPref('timelineAutoUpdate'));
 };
 
 // 変更検知
@@ -70,6 +72,8 @@ const vivify = () => {
     $('#webrequestHeaderCleaningAll').on('change', confirmedChanging);
     $('#webrequestHeaderChangingUseragent').on('change', disableUseragentTextbox);
     $('#unregister').on('click', unregister);
+    // for side-twitter
+    $('#timelineAutoUpdate').on('change', disableUpdateIntervalTextbox);
 };
 
 // ローカライズ
@@ -90,6 +94,11 @@ const localization = () => {
 const disableUseragentTextbox = (e) => {
     $('#useragent').prop('disabled', !e.target.checked);
     bg.startHeaderChanging();
+};
+
+// updateIntervalテキストボックスの無効化
+const disableUpdateIntervalTextbox = (e) => {
+    $('#timelineUpdateInterval').prop('disabled', !e.target.checked);
 };
 
 // webrequestHeaderCleaningAll変更確認 on click
