@@ -64,9 +64,11 @@ const observer = new MutationObserver(mutations => {
     }
 
     // 広告削除
-    document.querySelectorAll('[data-testid=placementTracking]').forEach((ele)=>{
-        ele.parentElement.parentElement.parentElement.style.display = 'none';
-    });
+    if (removeAds) {
+        document.querySelectorAll('[data-testid=placementTracking]').forEach((ele)=>{
+            ele.parentElement.parentElement.parentElement.style.display = 'none';
+        });
+    }
 });
 
 if (frameId !== 0, parentId !== 0) {
