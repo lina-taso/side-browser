@@ -148,6 +148,7 @@ const checkClickEvent = (e) => {
 };
 
 const updateTimeline = () => {
+    // タイムラインが最上部にあるとき
     if (window.scrollY !== 0) return;
 
     document.querySelector('[href="/home"]').click();
