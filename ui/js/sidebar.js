@@ -36,7 +36,7 @@ const vivify = () => {
 
 // ローカライズ
 const localization = () => {
-    const suffixList = ['', 'title'];
+    const suffixList = ['', 'title', 'src'];
 
     for (const suffix of suffixList) {
         const attr = 'data-string' + (suffix ? '-' + suffix : '');

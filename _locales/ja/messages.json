@@ -15,6 +15,9 @@
     "webrequestHeaderCleaningAll-description" : {
         "message" : "Side Browserをご利用いただきありがとうございます。\nSide Browserを使用中に以下のようなメッセージが表示される場合があります。これを解消するためには設定画面の「全てのレスポンスヘッダーを書き換える。についての注意事項」を参照してください。"
     },
+    "webrequestHeaderCleaningAll-imgsrc" : {
+        "message" : "images/frame-error-message-ja.png"
+    },
     "webrequestHeaderCleaningAll-accept" : {
         "message" : "わかりました"
     },

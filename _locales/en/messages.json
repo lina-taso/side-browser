@@ -15,6 +15,9 @@
     "webrequestHeaderCleaningAll-description" : {
         "message" : "Thank you for using Side Browser.\nWhile using Side Browser, the following message may appear. To resolve this, please refer to the \"Notes on Rewrite all response headers\" in the options page."
     },
+    "webrequestHeaderCleaningAll-imgsrc" : {
+        "message" : "images/frame-error-message-en.png"
+    },
     "webrequestHeaderCleaningAll-accept" : {
         "message" : "Got it"
     },
