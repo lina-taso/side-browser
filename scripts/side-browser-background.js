@@ -158,6 +158,7 @@ var startHeaderCleaning = () => {
     browser.webRequest.onHeadersReceived.removeListener(webrequestHeaderCleaningAll);
 
     if (config.getPref('webrequestHeaderCleaningAll') === false) {
+/*
         // レスポンス受信時
         browser.webRequest.onHeadersReceived.addListener(
             webrequestHeaderCleaning,
@@ -167,6 +168,7 @@ var startHeaderCleaning = () => {
             },
             [ 'blocking', 'responseHeaders' ]
         );
+*/
     }
     else {
         // レスポンス受信時（スクリプト）
@@ -207,6 +209,7 @@ const webrequestHeaderChangingUseragent = details => {
 
 // ヘッダー書き換え開始
 var startHeaderChanging = () => {
+/*
     browser.webRequest.onBeforeSendHeaders.removeListener(webrequestHeaderChangingUseragent);
 
     if (config.getPref('webrequestHeaderChangingUseragent') === true) {
@@ -220,6 +223,7 @@ var startHeaderChanging = () => {
             [ 'blocking', 'requestHeaders' ]
         );
     }
+*/
 };
 
 // コンフィグ取得・取得後処理
