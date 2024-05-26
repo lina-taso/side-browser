@@ -49,15 +49,18 @@ const observer = new MutationObserver(mutations => {
             frameId : frameId,
             type    : 'url_change',
             url     : oldHref });
-    }
 
-    // Twitter自動更新
-    if (oldHref === 'https://x.com/home') {
-        clearInterval(autoUpdateTimer);
-        autoUpdateTimer = setInterval(updateTimeline, 2000);
-    }
-    else {
-        clearInterval(autoUpdateTimer);
+        // Twitter自動更新
+        if (oldHref === 'https://x.com/home') {
+            browser.runtime.sendMessage({
+                type : 'log',
+                updateInterval : updateInterval });
+            clearInterval(autoUpdateTimer);
+            autoUpdateTimer = setInterval(updateTimeline, updateInterval * 1000);
+        }
+        else {
+            clearInterval(autoUpdateTimer);
+        }
     }
 
     // 広告削除
@@ -151,9 +154,13 @@ const updateTimeline = () => {
     // タイムラインが最上部にあるとき
     if (window.scrollY !== 0) return;
 
-    document.querySelector('[href="/home"]').click();
+    // フォーカスされたウィンドウのみ
     browser.runtime.sendMessage({
-        type : 'log',
-        message : 'update'
+        type : 'update_timeline',
+        frameId : frameId
+    }).then((res, err) => {
+        if (res.update) {
+            document.querySelector('[href="/home"]').click();
+        }
     });
 };

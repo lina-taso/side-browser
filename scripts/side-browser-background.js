@@ -88,11 +88,21 @@ function message(message, sender, sendResponse)
                 }
             }
             break;
+        case 'update_timeline':
+            if (!config.getPref('timelineAutoUpdate')) break;
+            browser.windows.get(FRAMES[message.frameId]._windowId).then((win) => {
+                // フォーカスされたウィンドウのみ
+                if (win.focused) {
+                    sendResponse({ update : win.focused });
+                }
+            });
+            return true;
         case 'log':
             console.log(Boolean(message.frameId && FRAMES[message.frameId]), message);
             break;
         }
     }
+    return false;
 }
 
 // サイドバー開く

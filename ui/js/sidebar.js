@@ -138,6 +138,7 @@ class frameUI {
         this._$menuContainer= $panel.find('.menu-container');
         this._$copied       = $panel.find('.copied');
         this._$scale        = $panel.find('.scale');
+        browser.windows.getCurrent().then((win) => { this._windowId = win.id; });
 
         // ボタンイベント
         this._$panel.find('button.prev').on('click', () => { this.prev(); });
