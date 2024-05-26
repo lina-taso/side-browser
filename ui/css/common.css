@@ -80,6 +80,8 @@ button {
   flex: 1; }
   .address-bar .address {
     flex: 1;
+    display: flex;
+    align-items: center;
     width: 48px;
     height: 24px;
     padding: 2px;
@@ -87,13 +89,14 @@ button {
     border: 1px solid gray;
     border-radius: 4px;
     word-break: break-all;
-    overflow: hidden; }
+    overflow: hidden;
+    white-space: nowrap; }
   .address-bar .copied {
     position: absolute;
     top: 0;
     right: 26px;
-    display: flex;
     height: 24px;
+    display: flex;
     align-items: center; }
   .address-bar .copy-url {
     position: absolute;
