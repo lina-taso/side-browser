@@ -52,9 +52,6 @@ const observer = new MutationObserver(mutations => {
 
         // Twitter自動更新
         if (oldHref === 'https://x.com/home') {
-            browser.runtime.sendMessage({
-                type : 'log',
-                updateInterval : updateInterval });
             clearInterval(autoUpdateTimer);
             autoUpdateTimer = setInterval(updateTimeline, updateInterval * 1000);
         }
