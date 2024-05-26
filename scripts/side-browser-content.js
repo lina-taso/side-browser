@@ -23,19 +23,19 @@ const onload = () => {
         if (observe) {
             observer.observe(document.body, { childList : true, subtree : true });
         }
+
+        const onunload = () => {
+            browser.runtime.sendMessage({
+                frameId : frameId,
+                type    : 'unload' });
+        };
+        window.addEventListener('unload', onunload);
     }
     else {
         loaded = true;
     }
 };
 window.addEventListener('load', onload);
-
-const onunload = () => {
-    browser.runtime.sendMessage({
-        frameId : frameId,
-        type    : 'unload' });
-};
-window.addEventListener('unload', onunload);
 
 const observer = new MutationObserver(mutations => {
     if (oldHref !== window.location.href) {
