@@ -10,7 +10,7 @@
 </defs>
 <path fill="#B4B4B4" stroke="#4D4D4D" stroke-width="20" stroke-miterlimit="10" d="M110,178c0,6.627-5.373,12-12,12H22
 	c-6.627,0-12-5.373-12-12V22c0-6.627,5.373-12,12-12h76c6.627,0,12,5.373,12,12V178z"/>
+<polygon fill="#4D4D4D" points="70.31,170 40.31,170 149.69,30 179.69,30 "/>
 <polygon fill="#FFFFFF" stroke="#4D4D4D" stroke-width="20" stroke-miterlimit="10" points="164.641,160 124.641,160 55.358,40 
 	95.358,40 "/>
-<polygon fill="#4D4D4D" points="70.31,170 40.31,170 149.69,30 179.69,30 "/>
 </svg>
