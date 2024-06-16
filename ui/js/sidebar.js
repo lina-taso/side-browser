@@ -161,23 +161,14 @@ class frameUI {
         // webrequestイベント
         browser.webRequest.onBeforeRequest.addListener(
             (details) => { this.webrequestBeforerequest(details); },
-/*
-            { urls : ['<all_urls>' ], types : ['sub_frame' ], tabId : -1 }
-*/
             { urls : ['https://x.com/*' ], types : ['sub_frame' ], tabId : -1 }
         );
         browser.webRequest.onCompleted.addListener(
             (details) => { this.webrequestCompleted(details); },
-/*
-            { urls : ['<all_urls>' ], types : ['sub_frame' ], tabId : -1 }
-*/
             { urls : ['https://x.com/*' ], types : ['sub_frame' ], tabId : -1 }
         );
         browser.webRequest.onErrorOccurred.addListener(
             (details) => { this.webrequestErrorOccured(details); },
-/*
-            { urls : ['<all_urls>' ], types : ['sub_frame' ], tabId : -1 }
-*/
             { urls : ['https://x.com/*' ], types : ['sub_frame' ], tabId : -1 }
         );
 

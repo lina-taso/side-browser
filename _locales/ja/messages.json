@@ -12,35 +12,14 @@
     //
     // sidebar.xhtml
     //
-    "webrequestHeaderCleaningAll-description" : {
-        "message" : "Side Browserをご利用いただきありがとうございます。\nSide Browserを使用中に以下のようなメッセージが表示される場合があります。これを解消するためには設定画面の「全てのレスポンスヘッダーを書き換える。についての注意事項」を参照してください。"
-    },
-    "webrequestHeaderCleaningAll-imgsrc" : {
-        "message" : "images/frame-error-message-ja.png"
-    },
-    "webrequestHeaderCleaningAll-accept" : {
-        "message" : "わかりました"
-    },
-    "webrequestHeaderCleaningAll-option" : {
-        "message" : "設定を開きます"
-    },
     "openOption" : {
         "message" : "設定"
-    },
-    "title-naviPrev" : {
-        "message" : "前へ"
-    },
-    "title-naviNext" : {
-        "message" : "次へ"
     },
     "title-naviHome" : {
         "message" : "ホーム"
     },
     "title-naviRefresh" : {
         "message" : "更新"
-    },
-    "title-naviRun" : {
-        "message" : "移動"
     },
     "title-copyUrl" : {
         "message" : "URLをコピー"
@@ -64,27 +43,6 @@
     "options-h1-basic" : {
         "message" : "基本的な設定"
     },
-    "options-homeURL" : {
-        "message" : "ホームページURL"
-    },
-    "options-defaultScale" : {
-        "message" : "Side Browser起動時の拡大率"
-    },
-    "options-appendHttps" : {
-        "message" : "スキーマを指定しなかった場合、http://の代わりにhttps://を追加する。"
-    },
-    "options-xdomainTransition" : {
-        "message" : "Side Browser内で異なるドメイン名のリンク先への遷移を許可する。"
-    },
-    "options-xdomainTransition-description" : {
-        "message" : "チェックを外すと、異なるドメイン名のリンク先はタブで開きます。\nチェックすると、Side Browser内で遷移しますがリファラーがセットされません。"
-    },
-    "options-webrequestHeaderChangingUseragent" : {
-        "message" : "User-Agentヘッダーを書き換える。"
-    },
-    "options-ua" : {
-        "message" : "User-Agent"
-    },
     "options-timelineAutoUpdate" : {
         "message" : "ウィンドウがアクティブな時、タイムラインを自動更新する"
     },
@@ -99,57 +57,9 @@
     },
     "options-reloadRequired" : {
         "message" : "(*)... 設定を反映するにはSide X Browserのホームボタンか更新ボタンをクリックしてページを再読み込みする必要があります。"
-    },
-    "options-h1-advanced" : {
-        "message" : "高度な設定"
-    },
-    "options-webrequestHeaderCleaningAll" : {
-        "message" : "全てのレスポンスヘッダーを書き換える。"
-    },
-    "options-webrequestHeaderCleaningAll-description-sec1-title" : {
-        "message" : "「全てのレスポンスヘッダーを書き換える。」についての注意事項"
-    },
-    "options-webrequestHeaderCleaningAll-description-sec1" : {
-        "message" : "Side Browserではiframeタグを使用していますが、フレームへの埋め込みが禁止されたページを表示させるためにSide Browser内で発生したWebリクエストのX-Frame-Optionsレスポンスヘッダーを削除しています。\nしかし一部のWebサイトではService workerを利用してページを取得しているので、この方法ではSide BrowserでWebページを表示できません。\n\n"
-    },
-    "options-webrequestHeaderCleaningAll-description-sec2-title" : {
-        "message" : "このようなページをSide Browserで読み込むためには："
-    },
-    "options-webrequestHeaderCleaningAll-description-sec2" : {
-        "message" : "Service workerのX-Frame-Optionsレスポンスヘッダーを削除すれば読み込めるようになりますが、Service workerの通信はSide Browserと関係のない場所で発生するため、全てのService workerのX-Frame-Optionsレスポンスヘッダーを削除する必要があります。\n\n"
-    },
-    "options-webrequestHeaderCleaningAll-description-sec3-title" : {
-        "message" : "Service workerのX-Frame-Optionsレスポンスヘッダーを削除するために以下の処理を行います。"
-    },
-    "options-webrequestHeaderCleaningAll-description-sec3" : {
-        "message" : "1. 一度全てのService workerの登録を解除します。\n2. これ以降、新たに作成されるService workerのX-Frame-Optionsレスポンスヘッダーを削除します。\n\n"
-    },
-    "options-webrequestHeaderCleaningAll-description-sec4-title" : {
-        "message" : "この処理には以下のリスクが存在します。"
-    },
-    "options-webrequestHeaderCleaningAll-description-sec4" : {
-        "message" : "・フレームへの埋め込みを禁止しているページを、他ドメインの（悪意のある）Webページが埋め込んで表示できるようになります。\n\n"
-    },
-    "options-webrequestHeaderCleaningAll-description-sec5" : {
-        "message" : "このリスクを理解した上で、レスポンスヘッダーを削除するには、「全てのレスポンスヘッダーを書き換える。」にチェックを入れてください。チェックを入れることで、上述の2つの処理を実施します。"
-    },
-    "options-unregister" : {
-        "message" : "Side Browserを無効にしていた場合など、Side Browserで表示できないページがあるときに実行してください。"
-    },
-    "options-unregister-button" : {
-        "message" : "全てのService workerを登録解除する"
-    },
+    }
 
     //
     // options.js
     //
-    "confirmChanging-confirm" : {
-        "message" : "「全てのレスポンスヘッダーを書き換える。」についての注意事項を確認し、リスクを理解して設定を変更しますか？"
-    },
-    "unregister-confirm" : {
-        "message" : "全てのService workerを登録解除しますか？"
-    },
-    "unregister-alert" : {
-        "message" : "登録解除しました"
-    }
 }

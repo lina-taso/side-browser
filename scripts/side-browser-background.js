@@ -158,27 +158,11 @@ var startHeaderCleaning = () => {
     browser.webRequest.onHeadersReceived.removeListener(webrequestHeaderCleaningAll);
 
     if (config.getPref('webrequestHeaderCleaningAll') === false) {
-/*
-        // レスポンス受信時
-        browser.webRequest.onHeadersReceived.addListener(
-            webrequestHeaderCleaning,
-            { urls : [ '<all_urls>' ],
-              types : [ 'sub_frame' ],
-              tabId : -1 // タブ以外
-            },
-            [ 'blocking', 'responseHeaders' ]
-        );
-*/
     }
     else {
         // レスポンス受信時（スクリプト）
         browser.webRequest.onHeadersReceived.addListener(
             webrequestHeaderCleaningAll,
-/*
-            { urls : [ '<all_urls>' ],
-              types : [ 'sub_frame', 'script', 'xmlhttprequest' ],
-              tabId : -1 // タブ以外
-*/
             { urls : [ 'https://x.com/*' ],
               types : [ 'sub_frame', 'xmlhttprequest' ],
               tabId : -1 // タブ以外
@@ -209,21 +193,6 @@ const webrequestHeaderChangingUseragent = details => {
 
 // ヘッダー書き換え開始
 var startHeaderChanging = () => {
-/*
-    browser.webRequest.onBeforeSendHeaders.removeListener(webrequestHeaderChangingUseragent);
-
-    if (config.getPref('webrequestHeaderChangingUseragent') === true) {
-        // リクエスト送信前
-        browser.webRequest.onBeforeSendHeaders.addListener(
-            webrequestHeaderChangingUseragent,
-            { urls : [ '<all_urls>' ],
-              types : [ 'sub_frame' ],
-              tabId : -1 // タブ以外
-            },
-            [ 'blocking', 'requestHeaders' ]
-        );
-    }
-*/
 };
 
 // コンフィグ取得・取得後処理
