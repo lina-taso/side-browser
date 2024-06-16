@@ -7,7 +7,7 @@
         "url" : "https://www2.filewo.net/"
     },
     "description" : "__MSG_extensionDescription__",
-    "version" : "0.1.5.2",
+    "version" : "0.1.6",
     "applications" : {
         "gecko" : {
             "id" : "side-x-browser@filewo.net",
@@ -51,6 +51,10 @@
         "browser_style" : false,
         "default_icon" : "images/side-x-browser-logo.svg",
         "default_title" : "__MSG_extensionName__"
+    },
+
+    "commands" : {
+        "_execute_sidebar_action" : { }
     },
 
     "permissions" : [

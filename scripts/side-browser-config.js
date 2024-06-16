@@ -57,6 +57,8 @@ const defaultconfig = {
     xdomainTransition : false,
     webrequestHeaderChangingUseragent : false,
     useragent : '',
+    enableKeyboardShortcut : false,
+    shortcutKey : 'T',
     webrequestHeaderCleaningAll : true,
     // for side-twitter
     timelineAutoUpdate : true,

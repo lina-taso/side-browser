@@ -43,6 +43,9 @@
     "options-h1-basic" : {
         "message" : "Basic Preference"
     },
+    "options-defaultScale" : {
+        "message" : "Initial zoon ratio on starting Side X Browser"
+    },
     "options-timelineAutoUpdate" : {
         "message" : "Update the home timeline automatically on the active window."
     },
@@ -54,6 +57,9 @@
     },
     "options-timelineRemoveAds" : {
         "message" : "(*) Remove advertisements from the timeline."
+    },
+    "options-enableKeyboardShortcut" : {
+        "message" : "Enable keyboard shortcut to open and close the sidebar."
     },
     "options-reloadRequired" : {
         "message" : "(*)... To apply settings refreshing the page is required by clicking Home or Refresh buttons of Side X Browser."

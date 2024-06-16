@@ -43,6 +43,9 @@
     "options-h1-basic" : {
         "message" : "基本的な設定"
     },
+    "options-defaultScale" : {
+        "message" : "Side X Browser起動時の拡大率"
+    },
     "options-timelineAutoUpdate" : {
         "message" : "ウィンドウがアクティブな時、タイムラインを自動更新する"
     },
@@ -54,6 +57,9 @@
     },
     "options-timelineRemoveAds" : {
         "message" : "(*) タイムラインから広告を除去する"
+    },
+    "options-enableKeyboardShortcut" : {
+        "message" : "サイドバーの開閉用にキーボードショートカットを有効にする。"
     },
     "options-reloadRequired" : {
         "message" : "(*)... 設定を反映するにはSide X Browserのホームボタンか更新ボタンをクリックしてページを再読み込みする必要があります。"
