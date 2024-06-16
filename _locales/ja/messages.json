@@ -79,6 +79,9 @@
     "options-ua" : {
         "message" : "User-Agent"
     },
+    "options-enableKeyboardShortcut" : {
+        "message" : "サイドバーの開閉用にキーボードショートカットを有効にする。"
+    },
     "options-h1-advanced" : {
         "message" : "高度な設定"
     },

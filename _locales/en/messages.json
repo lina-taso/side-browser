@@ -79,6 +79,9 @@
     "options-ua" : {
         "message" : "User-Agent"
     },
+    "options-enableKeyboardShortcut" : {
+        "message" : "Enable keyboard shortcut to open and close the sidebar."
+    },
     "options-h1-advanced" : {
         "message" : "Advanced Preference"
     },
