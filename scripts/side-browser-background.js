@@ -163,7 +163,7 @@ var startHeaderCleaning = () => {
         // レスポンス受信時（スクリプト）
         browser.webRequest.onHeadersReceived.addListener(
             webrequestHeaderCleaningAll,
-            { urls : [ 'https://x.com/*' ],
+            { urls : [ 'https://twitter.com/*', 'https://x.com/*' ],
               types : [ 'sub_frame', 'xmlhttprequest' ],
               tabId : -1 // タブ以外
             },
