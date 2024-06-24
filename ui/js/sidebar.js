@@ -13,6 +13,8 @@ let bg;
 
 window.addEventListener('load', async () => {
     bg = await browser.runtime.getBackgroundPage();
+    // wait config
+    await waitConfig();
     vivify();
     localization();
     initDialog();
@@ -26,6 +28,15 @@ window.addEventListener('unload', () => {
         delete bg.FRAMES[frameId];
     });
 });
+
+// wait config initialized
+const waitConfig = async () => {
+    if (bg.config.initialized) return;
+    await new Promise(resolve => setTimeout(async () => {
+        await waitConfig();
+        resolve();
+    }, 1000));
+};
 
 // 個別アクション
 const vivify = () => {
@@ -51,19 +62,9 @@ const localization = () => {
 // ダイアログ表示済み
 function initDialog()
 {
-    try {
-        // popup-webrequestHeaderCleaningAll
-        if (!bg.config.getPref('popup-webrequestHeaderCleaningAll')) {
-            $('#popup-webrequestHeaderCleaningAll').fadeIn();
-        }
-    } catch (e) {
-        // retry
-        setTimeout(() => {
-            // popup-webrequestHeaderCleaningAll
-            if (!bg.config.getPref('popup-webrequestHeaderCleaningAll')) {
-                $('#popup-webrequestHeaderCleaningAll').fadeIn();
-            }
-        }, 1000);
+    // popup-webrequestHeaderCleaningAll
+    if (!bg.config.getPref('popup-webrequestHeaderCleaningAll')) {
+        $('#popup-webrequestHeaderCleaningAll').fadeIn();
     }
 }
 
