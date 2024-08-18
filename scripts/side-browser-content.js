@@ -11,8 +11,9 @@ const frameId  = parseInt(browser.runtime.getFrameId(window)),
 let loaded  = false,
     init    = false,
     observe = false,
-    updateInterval = 600,
-    removeAds      = false,
+    updateInterval    = 600,
+    removeAds         = false,
+    removePremiumLink = false,
     oldHref;
 let autoUpdateTimer;
 
@@ -50,10 +51,15 @@ const observer = new MutationObserver(mutations => {
             type    : 'url_change',
             url     : oldHref });
 
-        // Twitter自動更新
         if (oldHref === 'https://x.com/home') {
+            // Twitter自動更新
             clearInterval(autoUpdateTimer);
             autoUpdateTimer = setInterval(updateTimeline, updateInterval * 1000);
+
+            // プレミアムリンク削除
+            if (removePremiumLink) {
+                document.querySelector('[href="/i/premium_sign_up"]').parentElement.parentElement.style.visibility = 'hidden';
+            }
         }
         else {
             clearInterval(autoUpdateTimer);
@@ -94,6 +100,8 @@ if (frameId !== 0, parentId !== 0) {
             updateInterval = res.timelineUpdateInterval;
             // 広告削除
             removeAds      = res.timelineRemoveAds;
+            // プレミアムリンク削除
+            removePremiumLink  = res.timelineRemovePremiumLink;
 
             // 読み込み済み
             if (loaded) onload();

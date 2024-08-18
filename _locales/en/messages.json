@@ -58,6 +58,9 @@
     "options-timelineRemoveAds" : {
         "message" : "(*) Remove advertisements from the timeline."
     },
+    "options-timelineRemovePremiumLink" : {
+        "message" : "(*) Hide \"Get Premium\" link."
+    },
     "options-enableKeyboardShortcut" : {
         "message" : "Enable keyboard shortcut to open and close the sidebar."
     },

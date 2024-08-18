@@ -42,8 +42,9 @@ function message(message, sender, sendResponse)
                 xdomainTransition : config.getPref('xdomainTransition')
             };
             // for side-twitter
-            res.timelineUpdateInterval = config.getPref('timelineUpdateInterval');
-            res.timelineRemoveAds      = config.getPref('timelineRemoveAds');
+            res.timelineUpdateInterval    = config.getPref('timelineUpdateInterval');
+            res.timelineRemoveAds         = config.getPref('timelineRemoveAds');
+            res.timelineRemovePremiumLink = config.getPref('timelineRemovePremiumLink');
             // 親フレーム
             if (FRAMES[message.frameId]) {
                 sendResponse(res);

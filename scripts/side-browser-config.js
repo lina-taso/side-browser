@@ -64,6 +64,7 @@ const defaultconfig = {
     timelineAutoUpdate : true,
     timelineUpdateInterval : 600,
     timelineRemoveAds : true,
+    timelineRemovePremiumLink : true,
     // debug options
     changeScreen : true,
     changeScreenWidth : 400,

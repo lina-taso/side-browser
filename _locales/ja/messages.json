@@ -58,6 +58,9 @@
     "options-timelineRemoveAds" : {
         "message" : "(*) タイムラインから広告を除去する"
     },
+    "options-timelineRemovePremiumLink" : {
+        "message" : "(*) プレミアムへ登録リンクを隠す"
+    },
     "options-enableKeyboardShortcut" : {
         "message" : "サイドバーの開閉用にキーボードショートカットを有効にする。"
     },
