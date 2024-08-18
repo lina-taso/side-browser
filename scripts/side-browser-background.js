@@ -5,7 +5,7 @@
  * @license Mozilla Public License, version 2.0
  */
 
-const FIRSTRUNURL = 'https://www2.filewo.net/wordpress/category/products/side-browser/';
+const FIRSTRUNURL = 'https://www2.filewo.net/wordpress/category/products/side-x-browser/';
 const ORIGINURL = browser.runtime.getURL('/ui/sidebar.xhtml');
 const DOCUMENTURL = browser.runtime.getURL('/ui/inline-browser.xhtml');
 
