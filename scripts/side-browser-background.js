@@ -22,8 +22,16 @@ async function startup()
 {
 }
 
-function install()
+function install(details)
 {
+    if (details.reason == 'install' || details.reason == 'update') {
+
+        return browser.tabs.create({
+            url : FIRSTRUNURL,
+            active : true
+        });
+    }
+    return Promise.resolve();
 }
 
 function message(message, sender, sendResponse)
