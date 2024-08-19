@@ -55,11 +55,6 @@ const observer = new MutationObserver(mutations => {
             // Twitter自動更新
             clearInterval(autoUpdateTimer);
             autoUpdateTimer = setInterval(updateTimeline, updateInterval * 1000);
-
-            // プレミアムリンク削除
-            if (removePremiumLink) {
-                document.querySelector('[href="/i/premium_sign_up"]').parentElement.parentElement.style.visibility = 'hidden';
-            }
         }
         else {
             clearInterval(autoUpdateTimer);
@@ -68,8 +63,14 @@ const observer = new MutationObserver(mutations => {
 
     // 広告削除
     if (removeAds) {
-        document.querySelectorAll('[data-testid="placementTracking"]:has(>[data-testid="top-impression-pixel"])').forEach((ele)=>{
+        document.querySelectorAll('[data-testid="placementTracking"]:has(>[data-testid="top-impression-pixel"])').forEach(ele => {
             ele.parentElement.parentElement.parentElement.style.display = 'none';
+        });
+    }
+    // プレミアムリンク削除
+    if (removePremiumLink) {
+        document.querySelectorAll('#layers > div:nth-of-type(2) [href="/i/premium_sign_up"]').forEach(ele => {
+            ele.parentElement.parentElement.style.visibility = 'hidden';
         });
     }
 });
