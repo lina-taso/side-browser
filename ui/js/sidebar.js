@@ -240,7 +240,7 @@ class frameUI {
     }
     // ページ共有
     share() {
-        browser.tabs.query({ active : true }).then((tabs) => {
+        browser.tabs.query({ active : true, currentWindow : true }).then((tabs) => {
             bg.console.log(tabs);
             this.hrefLoad = 'https://x.com/compose/post?'
                 + 'text=' + encodeURIComponent(tabs[0].title)
