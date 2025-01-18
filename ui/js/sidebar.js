@@ -12,8 +12,7 @@ const FRAMEIDS = [],
 let bg;
 
 window.addEventListener('load', async () => {
-    bg = await browser.runtime.getBackgroundPage();
-    // wait config
+    await waitBackground();
     await waitConfig();
     vivify();
     localization();
@@ -29,13 +28,17 @@ window.addEventListener('unload', () => {
     });
 });
 
+// wait background initialized
+const waitBackground = async () => {
+    bg = await browser.runtime.getBackgroundPage();
+    if (bg) return Promise.resolve();
+    return new Promise(resolve => setTimeout(() => { waitBackground().then(resolve); }, 1000));
+};
+
 // wait config initialized
 const waitConfig = async () => {
-    if (bg.config.initialized) return;
-    await new Promise(resolve => setTimeout(async () => {
-        await waitConfig();
-        resolve();
-    }, 1000));
+    if (bg.config.initialized) return Promise.resolve();
+    return new Promise(resolve => setTimeout(() => { waitConfig().then(resolve); }, 1000));
 };
 
 // 個別アクション
