@@ -47,7 +47,7 @@
         "message" : "Side X Browser起動時の拡大率"
     },
     "options-timelineAutoUpdate" : {
-        "message" : "ウィンドウがアクティブな時、タイムラインを自動更新する"
+        "message" : "ウィンドウがアクティブな時、タイムラインを自動更新する。"
     },
     "options-timelineUpdateInterval" : {
         "message" : "(*) 自動更新の間隔（秒）"
@@ -56,10 +56,10 @@
         "message" : "自動更新の間隔を短くしすぎると、すぐに1日のタイムライン取得上限に到達するので注意して下さい。"
     },
     "options-timelineRemoveAds" : {
-        "message" : "(*) タイムラインから広告を除去する"
+        "message" : "(*) タイムラインから広告を除去する。"
     },
     "options-timelineRemovePremiumLink" : {
-        "message" : "(*) プレミアムへ登録リンクを隠す"
+        "message" : "(*) プレミアムへ登録リンクを隠す。"
     },
     "options-enableKeyboardShortcut" : {
         "message" : "サイドバーの開閉用にキーボードショートカットを有効にする。"
