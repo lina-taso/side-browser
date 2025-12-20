@@ -53,6 +53,7 @@ function message(message, sender, sendResponse)
             res.timelineUpdateInterval    = config.getPref('timelineUpdateInterval');
             res.timelineRemoveAds         = config.getPref('timelineRemoveAds');
             res.timelineRemovePremiumLink = config.getPref('timelineRemovePremiumLink');
+            res.timelineShowFollowTlFirst = config.getPref('timelineShowFollowTlFirst');
             // 親フレーム
             if (FRAMES[message.frameId]) {
                 sendResponse(res);

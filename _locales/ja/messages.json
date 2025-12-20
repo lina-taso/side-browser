@@ -61,6 +61,9 @@
     "options-timelineRemovePremiumLink" : {
         "message" : "(*) プレミアムへ登録リンクを隠す。"
     },
+    "options-timelineShowFollowTlFirst" : {
+        "message" : "(*) ホームを開くときフォロータイムラインを最初に表示する。"
+    },
     "options-enableKeyboardShortcut" : {
         "message" : "サイドバーの開閉用にキーボードショートカットを有効にする。"
     },

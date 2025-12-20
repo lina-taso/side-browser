@@ -14,6 +14,10 @@ let loaded  = false,
     updateInterval    = 600,
     removeAds         = false,
     removePremiumLink = false,
+    showFollowTlFirst = false,
+    // flag
+    waitingLoadHome   = false,
+    // state
     oldHref;
 let autoUpdateTimer;
 
@@ -42,6 +46,20 @@ const onload = () => {
 window.addEventListener('load', onload);
 
 const observer = new MutationObserver(mutations => {
+    // ホームタイムラインの読み込み待ち
+    if (waitingLoadHome) {
+        // ホームタイムライン読み込み前にページ遷移
+        if (oldHref !== 'https://x.com/home')
+            waitingLoadHome = false;
+
+        else {
+            // フォロータイムラインを表示
+            if (showFollowTlFirst)
+                document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab]').click();
+        }
+    }
+
+    // URL変更
     if (oldHref !== window.location.href) {
         const before = oldHref;
         oldHref = window.location.href;
@@ -55,6 +73,14 @@ const observer = new MutationObserver(mutations => {
             // Twitter自動更新
             clearInterval(autoUpdateTimer);
             autoUpdateTimer = setInterval(updateTimeline, updateInterval * 1000);
+
+            // フォロータイムラインを表示
+            if (showFollowTlFirst) {
+                if (document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab]'))
+                    document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab]').click();
+                else
+                    waitingLoadHome = true;
+            }
         }
         else {
             clearInterval(autoUpdateTimer);
@@ -103,6 +129,8 @@ if (frameId !== 0, parentId !== 0) {
             removeAds      = res.timelineRemoveAds;
             // プレミアムリンク削除
             removePremiumLink  = res.timelineRemovePremiumLink;
+            // 最初にフォロータイムライン表示
+            showFollowTlFirst  = res.timelineShowFollowTlFirst;
 
             // 読み込み済み
             if (loaded) onload();
