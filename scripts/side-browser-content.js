@@ -54,8 +54,10 @@ const observer = new MutationObserver(mutations => {
 
         else {
             // フォロータイムラインを表示
-            if (showFollowTlFirst)
+            if (showFollowTlFirst) {
                 document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab]').click();
+                waitingLoadHome = false;
+            }
         }
     }
 
