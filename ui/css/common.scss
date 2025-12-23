@@ -142,57 +142,6 @@ button {
     width: 100%;
     height: 100%;
     transform-origin: top left;
-
-    &[data-scale="50"] {
-        transform:    scale(0.5);
-        width:  calc(100% / 0.5);
-        height: calc(100% / 0.5);
-    }
-    &[data-scale="60"] {
-        transform:    scale(0.6);
-        width:  calc(100% / 0.6);
-        height: calc(100% / 0.6);
-    }
-    &[data-scale="70"] {
-        transform:    scale(0.7);
-        width:  calc(100% / 0.7);
-        height: calc(100% / 0.7);
-    }
-    &[data-scale="80"] {
-        transform:    scale(0.8);
-        width:  calc(100% / 0.8);
-        height: calc(100% / 0.8);
-    }
-    &[data-scale="90"] {
-        transform:    scale(0.9);
-        width:  calc(100% / 0.9);
-        height: calc(100% / 0.9);
-    }
-    &[data-scale="110"] {
-        transform:    scale(1.1);
-        width:  calc(100% / 1.1);
-        height: calc(100% / 1.1);
-    }
-    &[data-scale="120"] {
-        transform:    scale(1.2);
-        width:  calc(100% / 1.2);
-        height: calc(100% / 1.2);
-    }
-    &[data-scale="130"] {
-        transform:    scale(1.3);
-        width:  calc(100% / 1.3);
-        height: calc(100% / 1.3);
-    }
-    &[data-scale="140"] {
-        transform:    scale(1.4);
-        width:  calc(100% / 1.4);
-        height: calc(100% / 1.4);
-    }
-    &[data-scale="150"] {
-        transform:    scale(1.5);
-        width:  calc(100% / 1.5);
-        height: calc(100% / 1.5);
-    }
 }
 
 .menu-container {

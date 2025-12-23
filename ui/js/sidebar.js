@@ -266,7 +266,7 @@ class frameUI {
     }
     // 拡大率
     scale(ratio) {
-        this._$iframe.attr('data-scale', ratio);
+        this._$iframe.css('zoom', ratio/100);
         this._$scale.text(ratio);
     }
     // オプション
