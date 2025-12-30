@@ -68,6 +68,7 @@ function initDialog()
     // popup-webrequestHeaderCleaningAll
     if (!bg.config.getPref('popup-webrequestHeaderCleaningAll')) {
         $('#popup-webrequestHeaderCleaningAll').fadeIn();
+        $('#popup-veil').fadeIn();
     }
 }
 
@@ -82,6 +83,7 @@ function shownDialog(e)
 function closeDialog(e)
 {
     $(e.target).closest('.popup-panel').fadeOut();
+    $('#popup-veil').fadeOut();
 }
 
 // 設定ページを開く
@@ -148,7 +150,8 @@ class frameUI {
         this._$panel.find('button.home').on('click', () => { this.home(); });
         this._$panel.find('button.refresh').on('click', () => { this.refresh(); });
         this._$panel.find('button.run').on('click', () => { this.run(); });
-        this._$panel.find('button.menu').on('click', e => { this.menu(e); });
+        this._$panel.find('button.menu').on('click', () => { this.menu(); });
+        this._$panel.find('.menu-veil').on('click', () => { this.menuVeil(); });
         this._$panel.find('button.scale-minus').on('click', e => { this.scaleMinus(e); });
         this._$panel.find('button.scale-plus').on('click', e => { this.scalePlus(e); });
         this._$panel.find('button.open-option').on('click', e => { this.openOption(e); });
@@ -231,8 +234,14 @@ class frameUI {
         this.hrefLoad = url;
     }
     // メニューボタン
-    menu(e) {
+    menu() {
         this._$menuContainer.fadeToggle();
+        this._$menuContainer.siblings('.menu-veil').fadeToggle();
+    }
+    // メニューveil
+    menuVeil() {
+        this._$menuContainer.fadeOut();
+        this._$menuContainer.siblings('.menu-veil').fadeOut();
     }
     // 縮小
     scaleMinus(e) {
@@ -270,8 +279,9 @@ class frameUI {
         this._$scale.text(ratio);
     }
     // オプション
-    openOption(ratio) {
+    openOption() {
         this._$menuContainer.fadeOut();
+        this._$menuContainer.siblings('.menu-veil').fadeOut();
         browser.runtime.openOptionsPage();
     }
 
