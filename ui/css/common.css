@@ -6,7 +6,8 @@
     --input-background-color: whitesmoke;
     --shadow-color: gray;
     --border-color: darkgray;
-    --font-color: #202020; } }
+    --font-color: #202020;
+    --disabled-font-color: #808080; } }
 @media (prefers-color-scheme: dark) {
   :root {
     --background-color: #282833;
@@ -14,7 +15,8 @@
     --input-background-color: #3c3c4d;
     --shadow-color: gray;
     --border-color: #777799;
-    --font-color: #e1e1e1; } }
+    --font-color: #e1e1e1;
+    --disabled-font-color: #818181; } }
 html, body {
   width: 100%;
   height: 100%;
@@ -102,6 +104,7 @@ button {
   flex-direction: row;
   flex: 1; }
   .address-bar .address {
+    pointer-events: none;
     flex: 1;
     display: flex;
     align-items: center;
@@ -112,7 +115,7 @@ button {
     overflow: hidden;
     white-space: nowrap;
     border-radius: 5px;
-    color: var(--font-color);
+    color: var(--disabled-font-color);
     background-color: var(--input-background-color); }
     .address-bar .address:hover {
       background-color: var(--hover-background-color); }
@@ -124,13 +127,19 @@ button {
     top: 0;
     right: 26px;
     height: 24px;
+    padding: 0 4px;
     display: flex;
-    align-items: center; }
+    align-items: center;
+    border-radius: 5px;
+    color: var(--font-color);
+    background-color: var(--background-color); }
   .address-bar .copy-url {
     position: absolute;
     top: 0;
     right: 0;
     background-color: transparent; }
+    .address-bar .copy-url:focus {
+      background-color: var(--hover-background-color); }
 
 .browser-container {
   display: flex;
