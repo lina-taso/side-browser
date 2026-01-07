@@ -55,7 +55,7 @@ const observer = new MutationObserver(mutations => {
         else {
             // フォロータイムラインを表示
             if (showFollowTlFirst) {
-                document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab]').click();
+                document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab][aria-selected=false]').click();
                 waitingLoadHome = false;
             }
         }
@@ -79,7 +79,7 @@ const observer = new MutationObserver(mutations => {
             // フォロータイムラインを表示
             if (showFollowTlFirst) {
                 if (document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab]'))
-                    document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab]').click();
+                    document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab][aria-selected=false]').click();
                 else
                     waitingLoadHome = true;
             }
