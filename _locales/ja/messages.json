@@ -24,8 +24,17 @@
     "webrequestHeaderCleaningAll-option" : {
         "message" : "設定を開きます"
     },
-    "openOption" : {
-        "message" : "設定"
+    "changeHomePanel-description" : {
+        "message" : "このパネルのホームページURL:"
+    },
+    "changeHomePanel-apply" : {
+        "message" : "適用"
+    },
+    "changeHomePanel-cancel" : {
+        "message" : "キャンセル"
+    },
+    "changeHomePanel-title-useNowLocation" : {
+        "message" : "現在のURLを使用"
     },
     "title-naviPrev" : {
         "message" : "前へ"
@@ -50,6 +59,18 @@
     },
     "title-naviOpenOption" : {
         "message" : "設定を開く"
+    },
+    "title-naviChangeHome" : {
+        "message" : "ホームページURLを変更"
+    },
+    "title-naviResetHeight" : {
+        "message" : "パネルの高さをリセットする"
+    },
+    "title-naviAddPanel" : {
+        "message" : "新しいパネルを追加"
+    },
+    "title-naviClosePanel" : {
+        "message" : "パネルを閉じる"
     },
 
     //

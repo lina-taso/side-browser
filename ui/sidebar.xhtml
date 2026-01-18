@@ -50,28 +50,59 @@
                 </button>
             </div>
 
-            <div class="menu-veil" style="display: none;" />
+            <div class="panel-veil" style="display: none;" />
 
             <div class="menu-container" style="display: none;">
                 <div class="menu-item bar scale-bar">
                     <button class="scale-minus" tabindex="1" data-string-title="title-naviZoomout">
-                        <i class="fa-solid fa-fw fa-minus" />
+                        <i class="fa-solid fa-fw fa-magnifying-glass-minus" />
                     </button>
                     <div class="scale">100</div>
                     <button class="scale-plus" tabindex="1" data-string-title="title-naviZoomin">
-                        <i class="fa-solid fa-fw fa-plus" />
+                        <i class="fa-solid fa-fw fa-magnifying-glass-plus" />
                     </button>
                 </div>
-                <button class="menu-item open-option" tabindex="1" data-string-title="title-naviOpenOption">
-                    <i class="fa-solid fa-fw fa-gear" />
-                    <span data-string="openOption" />
-                </button>
+                <div class="menu-item bar panel-bar">
+                    <button class="menu-item open-option" tabindex="1" data-string-title="title-naviOpenOption">
+                        <i class="fa-solid fa-fw fa-gear" />
+                    </button>
+                    <button class="menu-item change-home" tabindex="1" data-string-title="title-naviChangeHome">
+                        <i class="fa-solid fa-fw fa-house-circle-check" />
+                    </button>
+                    <button class="menu-item reset-height" tabindex="1" data-string-title="title-naviResetHeight">
+                        <i class="fa-solid fa-fw fa-ruler-vertical" />
+                    </button>
+                    <button class="menu-item add-panel" tabindex="1" data-string-title="title-naviAddPanel">
+                        <i class="fa-solid fa-fw fa-plus" />
+                    </button>
+                    <button class="menu-item close-panel" tabindex="1" data-string-title="title-naviClosePanel">
+                        <i class="fa-solid fa-fw fa-xmark" />
+                    </button>
+                </div>
+            </div>
+
+            <div class="popup-changeHomePanel popup-panel" style="display: none;" data-veil=".panel-veil">
+                <p class="pre-wrap" data-string="changeHomePanel-description" />
+                <div class="bar">
+                    <input class="textbox homeURL" tabindex="1" />
+                    <button class="use-now-location" tabindex="1" data-string-title="changeHomePanel-title-useNowLocation">
+                        <i class="fa-solid fa-fw fa-location-crosshairs" />
+                    </button>
+                </div>
+                <div class="popup-buttons-horizontal">
+                    <button class="apply-dialog" tabindex="1" data-string="changeHomePanel-apply" />
+                    <button class="close-dialog" tabindex="1" data-string="changeHomePanel-cancel" />
+                </div>
             </div>
 
             <div class="browser-container">
                 <iframe class="browser" referrerpolicy="no-referrer" src="inline-browser.xhtml"></iframe>
             </div>
 
+            <div class="browser-panel-handler" />
+
         </div> <!-- /.browser-panel -->
+
+        <div id="panel-container"></div>
     </body>
 </html>

@@ -16,6 +16,7 @@ window.addEventListener('load', async () => {
     await waitConfig();
     vivify();
     localization();
+    listenConfigChange();
     initDialog();
     initBrowserPanels();
 });
@@ -63,6 +64,30 @@ const localization = () => {
 };
 
 // ダイアログ表示済み
+// コンフィグ変更検知
+function listenConfigChange()
+{
+    browser.storage.onChanged.addListener((change, area) => {
+        if (change.panelSettings) {
+            // newValueは初期値が空になる
+            const settings = JSON.parse(bg.config.getPref('panelSettings'));
+            // パネル削除チェック
+            $('.browser-panel:not(.template)').each((i,panel) => {
+                if (!settings.some(e => e.id === panel.id))
+                    removeBrowserPanel(panel.id);
+            });
+            settings.forEach((setting, i) => {
+                // パネル追加チェック
+                if ($('#'+setting.id).length === 0) addBrowserPanel(setting, i);
+                // 設定反映
+                else updateBrowserPanel(setting);
+            });
+            // TODO: パネル順序実装したら順序チェック
+       }
+    });
+}
+
+// ダイアログ初期化
 function initDialog()
 {
     // popup-webrequestHeaderCleaningAll
@@ -96,15 +121,19 @@ function openOptionsPage(e)
 // UI初期化
 function initBrowserPanels()
 {
-    addBrowserPanel('panel1');
+    const settings = JSON.parse(bg.config.getPref('panelSettings'));
+    settings.forEach(addBrowserPanel);
 }
 
 // ブラウザーフレームを追加
-function addBrowserPanel(panelId)
+function addBrowserPanel(panelSetting, position)
 {
     // パネルを追加
-    const $panel = $('.browser-panel.template').clone(true)
-          .removeClass('template').attr('id', panelId).appendTo('body');
+    const $panel = $('.browser-panel.template').clone(true).removeClass('template').attr('id', panelSetting.id);
+    // 末尾に追加
+    if (!position) $panel.appendTo('#panel-container');
+    // positionに挿入
+    else $panel.insertAfter($('#panel-container').children().eq(position-1));
 
     $panel.find('iframe.browser')[0].contentWindow.addEventListener('load', (e) => {
         const _window = e.currentTarget,
@@ -115,18 +144,33 @@ function addBrowserPanel(panelId)
         FRAMEIDS.push(frameId);
         // background script
         bg.FRAMES[frameId] = new frameUI($panel);
+        // settings
+        updateBrowserPanel(panelSetting);
     });
+}
+
+// ブラウザーフレームの更新
+function updateBrowserPanel(panelSetting)
+{
+    const $panel  = $('#'+panelSetting.id),
+          frameId = parseInt($panel.attr('data-inner-frameid'));
+
+    // settings
+    bg.FRAMES[frameId].height = panelSetting.height;
+    bg.FRAMES[frameId].scale = panelSetting.scale;
 }
 
 // ブラウザーフレームを削除
 function removeBrowserPanel(panelId)
 {
     const $panel = $('#'+panelId),
-          frameId = $panel.attr('data-inner-frameid');
+          frameId = parseInt($panel.attr('data-inner-frameid'));
 
     // パネルを削除
     $panel.remove();
 
+    const myidx = FRAMEIDS.indexOf(frameId);
+    FRAMEIDS.splice(myidx, 1);
     // 終了
     bg.FRAMES[frameId].destroy();
     delete bg.FRAMES[frameId];
@@ -135,31 +179,45 @@ function removeBrowserPanel(panelId)
 class frameUI {
     constructor($panel) {
         this._$panel        = $panel;
-        this._frameId       = parseInt(this._$panel.attr('data-inner-frameid'));
+        this._frameId       = parseInt($panel.attr('data-inner-frameid'));
         this._subframeIds   = [];
-        this._$iframe       = this._$panel.find('iframe.browser');
+        this._$iframe       = $panel.find('iframe.browser');
         this._iframeWindow  = this._$iframe[0].contentWindow;
         this._browserIframe = this._iframeWindow.document.getElementById('inline-browser');
         this._browserWindow = this._browserIframe.contentWindow;
+        this._$handler      = $panel.find('.browser-panel-handler');
         this._$menuContainer= $panel.find('.menu-container');
         this._$scale        = $panel.find('.scale');
+        this._$changeHomePanel= $panel.find('.popup-changeHomePanel');
 
         // ボタンイベント
-        this._$panel.find('button.prev').on('click', () => { this.prev(); });
-        this._$panel.find('button.next').on('click', () => { this.next(); });
-        this._$panel.find('button.home').on('click', () => { this.home(); });
-        this._$panel.find('button.refresh').on('click', () => { this.refresh(); });
-        this._$panel.find('button.run').on('click', () => { this.run(); });
-        this._$panel.find('button.menu').on('click', () => { this.menu(); });
-        this._$panel.find('.menu-veil').on('click', () => { this.menuVeil(); });
-        this._$panel.find('button.scale-minus').on('click', e => { this.scaleMinus(e); });
-        this._$panel.find('button.scale-plus').on('click', e => { this.scalePlus(e); });
-        this._$panel.find('button.open-option').on('click', e => { this.openOption(e); });
+        $panel.find('button.prev').on('click', () => { this.prev(); });
+        $panel.find('button.next').on('click', () => { this.next(); });
+        $panel.find('button.home').on('click', () => { this.home(); });
+        $panel.find('button.refresh').on('click', () => { this.refresh(); });
+        $panel.find('button.run').on('click', () => { this.run(); });
+        $panel.find('button.menu').on('click', () => { this.menu(); });
+        $panel.find('.panel-veil').on('click', () => { this.panelVeil(); });
+        $panel.find('button.scale-minus').on('click', e => { this.scaleMinus(e); });
+        $panel.find('button.scale-plus').on('click', e => { this.scalePlus(e); });
+        $panel.find('button.open-option').on('click', () => { this.openOption(); });
+        $panel.find('button.change-home').on('click', () => { this.openChangeHomePanel(); });
+        $panel.find('button.reset-height').on('click', () => { this.resetPanelHeight(); });
+        $panel.find('button.add-panel').on('click', () => { this.addPanel(); });
+        $panel.find('button.close-panel').on('click', () => { this.closePanel(); });
+        $panel.find('.popup-changeHomePanel .use-now-location').on('click', () => { this.useNowLocation(); });
+        $panel.find('.popup-changeHomePanel .apply-dialog').on('click', () => { this.updateHome(); });
 
         // アドレスバー
-        this._$panel.find('.textbox.address').on('keypress', e => {
+        $panel.find('.textbox.address').on('keypress', e => {
             e.originalEvent.key === 'Enter' && this.run();
+
         });
+        // リサイザー
+        $panel.find('.browser-panel-handler')
+            .on('mousedown', () => { this.mousedownHandler(); })
+            .on('mousemove', (e) => { this.mousemoveHandler(e); })
+            .on('mouseup mouseout', () => { this.mouseupHandler(); });
 
         // webrequestイベント
         browser.webRequest.onBeforeRequest.addListener(
@@ -175,8 +233,6 @@ class frameUI {
             { urls : ['<all_urls>' ], types : ['sub_frame' ], tabId : -1 }
         );
 
-        // 拡大率
-        this.scale(bg.config.getPref('defaultScale'));
         // ホームページ
         this.home();
     }
@@ -196,11 +252,36 @@ class frameUI {
     }
     // 読み込み中設定
     set _loading(bool) {
-        this._$panel.attr('data-loading', bool ? 'true' : 'false');
+        this._$panel.attr('data-loading', bool.toString());
     }
     // 読み込み中取得
     get loading() {
         return this._$panel.attr('data-loading') === 'true';
+    }
+    // 拡大率
+    set scale(ratio) {
+        this._$iframe.css('zoom', (ratio || 100)/100);
+        this._$scale.text(ratio || 100);
+    }
+    // パネル高さ
+    set height(height) {
+        if (height)
+            this._$panel.css({height : height, flex : 'unset'});
+        // リセット
+        else
+            this._$panel.css({flex : '1', height : ''});
+    }
+    // 設定
+    set config(setting) {
+        const settings = JSON.parse(bg.config.getPref('panelSettings'));
+        const i = settings.findIndex(e => e.id === this._$panel[0].id);
+        settings[i] = setting;
+        bg.config.setPref('panelSettings', JSON.stringify(settings));
+    }
+    // 設定取得
+    get config() {
+        const settings = JSON.parse(bg.config.getPref('panelSettings'));
+        return settings.filter(e => e.id === this._$panel[0].id)[0];
     }
 
     // 戻るボタン
@@ -213,7 +294,7 @@ class frameUI {
     }
     // ホームボタン
     home() {
-        this.href = bg.config.getPref('homeURL');
+        this.href = this.config.home;
         this.run();
     }
     // 再読込・中断ボタン
@@ -236,12 +317,13 @@ class frameUI {
     // メニューボタン
     menu() {
         this._$menuContainer.fadeToggle();
-        this._$menuContainer.siblings('.menu-veil').fadeToggle();
+        this._$menuContainer.siblings('.panel-veil').fadeToggle();
     }
-    // メニューveil
-    menuVeil() {
+    //パネルveil
+    panelVeil() {
         this._$menuContainer.fadeOut();
-        this._$menuContainer.siblings('.menu-veil').fadeOut();
+        this._$changeHomePanel.fadeOut();
+        this._$menuContainer.siblings('.panel-veil').fadeOut();
     }
     // 縮小
     scaleMinus(e) {
@@ -251,11 +333,11 @@ class frameUI {
         if (now >= scaleMin && now <= scaleMax) {
             let next = parseInt((now -1) / 10) * 10;
             next = next < scaleMin ? scaleMin : next;
-            this.scale(next);
+            this.scale = next;
         }
         // 100%
         else {
-            this.scale(100);
+            this.scale = 100;
         }
     }
     // 拡大
@@ -266,23 +348,110 @@ class frameUI {
         if (now >= scaleMin && now <= scaleMax) {
             let next = parseInt((now +11) / 10) * 10;
             next = next > scaleMax ? scaleMax : next;
-            this.scale(next);
+            this.scale = next;
         }
         // 100%
         else {
-            this.scale(100);
+            this.scale = 100;
         }
-    }
-    // 拡大率
-    scale(ratio) {
-        this._$iframe.css('zoom', ratio/100);
-        this._$scale.text(ratio);
     }
     // オプション
     openOption() {
         this._$menuContainer.fadeOut();
-        this._$menuContainer.siblings('.menu-veil').fadeOut();
+        this._$menuContainer.siblings('.panel-veil').fadeOut();
         browser.runtime.openOptionsPage();
+    }
+    // ホームページ変更
+    openChangeHomePanel() {
+        this._$menuContainer.fadeOut();
+        this._$changeHomePanel.fadeIn();
+        this._$changeHomePanel.find('.homeURL').val(this.config.home);
+    }
+    // ブラウザフレーム高さリセット
+    resetPanelHeight() {
+        this._$menuContainer.fadeOut();
+        this._$menuContainer.siblings('.panel-veil').fadeOut();
+        this.height = null;
+
+        // 設定値保存
+        const setting = this.config;
+        setting.height = null;
+        this.config = setting;
+    }
+    // パネル追加
+    addPanel() {
+        this._$menuContainer.fadeOut();
+        this._$menuContainer.siblings('.panel-veil').fadeOut();
+
+        const settings = JSON.parse(bg.config.getPref('panelSettings'));
+        const setting = {
+            id     : Date.now().toString(), // IDはUNIX時間（通常操作では重複しない）
+            home   : bg.config.getPref('homeURL'),
+            height : null,
+            scale  : bg.config.getPref('defaultScale')
+        };
+
+        // 自パネルの場所
+        const myidx = settings.findIndex(e => e.id === this._$panel[0].id);
+        // パネル追加
+        settings.splice(myidx + 1, 0, setting);
+        bg.config.setPref('panelSettings', JSON.stringify(settings));
+    }
+    // パネル削除
+    closePanel() {
+        this._$menuContainer.fadeOut();
+        this._$menuContainer.siblings('.panel-veil').fadeOut();
+
+        const settings = JSON.parse(bg.config.getPref('panelSettings'));
+        // 自パネルの場所
+        const myidx = settings.findIndex(e => e.id === this._$panel[0].id);
+        // 最初のパネルは削除不可、負の値は不正
+        if (myidx <= 0) return;
+        // パネル削除
+        settings.splice(myidx, 1);
+        bg.config.setPref('panelSettings', JSON.stringify(settings));
+    }
+    // 現在のURLを入力
+    useNowLocation() {
+        this._$changeHomePanel.find('.homeURL').val(this.href);
+    }
+    // ホームページを更新
+    updateHome() {
+        this._$changeHomePanel.fadeOut();
+        this._$menuContainer.siblings('.panel-veil').fadeOut();
+        // 設定値保存
+        const setting = this.config;
+        setting.home = this._$changeHomePanel.find('.homeURL').val();
+        this.config = setting;
+    }
+    // ブラウザフレーム高さ調整：ドラッグ開始
+    mousedownHandler() {
+        this._$handler.addClass('resizing');
+        if (this._$panel[0].style.height && this._$panel[0].style.height.endsWith('%')) {
+            const percent = parseFloat(this._$panel[0].style.height);
+            this.height = parseInt(document.body.clientHeight * percent / 100) + 'px';
+        }
+    }
+    // ブラウザフレーム高さ調整：マウス移動
+    mousemoveHandler(e) {
+        // リサイズ
+        if (this._$handler.hasClass('resizing')) {
+            const before = parseInt(this._$panel[0].style.height) || parseInt(this._$panel.outerHeight());
+            this.height = (before + e.originalEvent.movementY).toString() + 'px';
+        };
+    }
+    // ブラウザフレーム高さ調整：ドラッグ終了
+    mouseupHandler() {
+        if (this._$panel[0].style.height && this._$panel[0].style.height.endsWith('px')) {
+            const pixel = parseInt(this._$panel[0].style.height);
+            this.height = (pixel / document.body.clientHeight * 100).toString() + '%';
+
+            // 設定値保存
+            const setting = this.config;
+            setting.height = this._$panel[0].style.height;
+            this.config = setting;
+        }
+        this._$handler.removeClass('resizing');
     }
 
     // webrequestイベント

@@ -50,6 +50,8 @@ var config = {
 const defaultconfig = {
     // popup
     'popup-webrequestHeaderCleaningAll' : false,
+    // panel
+    'panelSettings' : '[{"id":"defaultpanel","home":"about:blank","height":null,"scale":null}]',
     // options
     homeURL : 'about:blank',
     defaultScale : 100,

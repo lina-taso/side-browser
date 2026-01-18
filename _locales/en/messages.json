@@ -24,8 +24,17 @@
     "webrequestHeaderCleaningAll-option" : {
         "message" : "Open options page"
     },
-    "openOption" : {
-        "message" : "Options"
+    "changeHomePanel-description" : {
+        "message" : "Homepage URL of this panel:"
+    },
+    "changeHomePanel-apply" : {
+        "message" : "Apply"
+    },
+    "changeHomePanel-cancel" : {
+        "message" : "Cancel"
+    },
+    "changeHomePanel-title-useNowLocation" : {
+        "message" : "Use current URL"
     },
     "title-naviPrev" : {
         "message" : "Prev"
@@ -50,6 +59,18 @@
     },
     "title-naviOpenOption" : {
         "message" : "Open options page"
+    },
+    "title-naviChangeHome" : {
+        "message" : "Change homepage URL"
+    },
+    "title-naviResetHeight" : {
+        "message" : "Reset panel height"
+    },
+    "title-naviAddPanel" : {
+        "message" : "Add new panel"
+    },
+    "title-naviClosePanel" : {
+        "message" : "Close panel"
     },
 
     //
