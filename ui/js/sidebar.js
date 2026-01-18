@@ -333,31 +333,41 @@ class frameUI {
     scaleMinus(e) {
         e.preventDefault();
         e.stopPropagation();
+        const setting = this.config;
         const now = parseInt(this._$scale.text());
         if (now >= scaleMin && now <= scaleMax) {
             let next = parseInt((now -1) / 10) * 10;
             next = next < scaleMin ? scaleMin : next;
             this.scale = next;
+            setting.scale = next;
         }
         // 100%
         else {
             this.scale = 100;
+            setting.scale = 100;
         }
+        // 設定値保存
+        this.config = setting;
     }
     // 拡大
     scalePlus(e) {
         e.preventDefault();
         e.stopPropagation();
+        const setting = this.config;
         const now = parseInt(this._$scale.text());
         if (now >= scaleMin && now <= scaleMax) {
             let next = parseInt((now +11) / 10) * 10;
             next = next > scaleMax ? scaleMax : next;
             this.scale = next;
+            setting.scale = next;
         }
         // 100%
         else {
             this.scale = 100;
+            setting.scale = 100;
         }
+        // 設定値保存
+        this.config = setting;
     }
     // オプション
     openOption() {
