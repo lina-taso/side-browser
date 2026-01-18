@@ -182,16 +182,16 @@ button {
     display: flex;
     flex-direction: row;
     flex: 1;
+    min-width: 0;
     .run::before {
     }
     .copied {
+        align-content: center;
         position: absolute;
         top: 0;
         right: 26px;
         height: 24px;
         padding: 0 4px;
-        display: flex;
-        align-items: center;
         border-radius: 5px;
         color: var(--font-color);
         background-color: var(--background-color);
@@ -208,6 +208,7 @@ button {
 }
 
 .address, .homeURL {
+    align-content: center;
     pointer-events: none;
     flex: 1;
     height: 24px;
