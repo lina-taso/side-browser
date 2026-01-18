@@ -12,12 +12,14 @@
     <body>
         <div id="popup-veil" style="display: none;" />
 
-        <div id="popup-webrequestHeaderCleaningAll" class="popup-panel" style="display: none;">
+        <div id="popup-webrequestHeaderCleaningAll" class="popup-panel" style="display: none;" data-veil="#popup-veil">
             <p class="pre-wrap" data-string="webrequestHeaderCleaningAll-description" />
             <img src="" data-string-src="webrequestHeaderCleaningAll-imgsrc" />
             <div class="spacer" />
-            <p><button class="w-100 close-dialog" tabindex="1" data-string="webrequestHeaderCleaningAll-accept" /></p>
-            <p><button class="w-100 open-option" tabindex="1" data-string="webrequestHeaderCleaningAll-option" /></p>
+            <div class="popup-buttons-vertical">
+                <button class="close-dialog" tabindex="1" data-string="webrequestHeaderCleaningAll-accept" />
+                <button class="open-option" tabindex="1" data-string="webrequestHeaderCleaningAll-option" />
+            </div>
         </div>
 
         <div id=""

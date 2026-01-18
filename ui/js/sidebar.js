@@ -63,7 +63,6 @@ const localization = () => {
     }
 };
 
-// ダイアログ表示済み
 // コンフィグ変更検知
 function listenConfigChange()
 {
@@ -91,10 +90,15 @@ function listenConfigChange()
 function initDialog()
 {
     // popup-webrequestHeaderCleaningAll
-    if (!bg.config.getPref('popup-webrequestHeaderCleaningAll')) {
-        $('#popup-webrequestHeaderCleaningAll').fadeIn();
-        $('#popup-veil').fadeIn();
-    }
+    if (!bg.config.getPref('popup-webrequestHeaderCleaningAll'))
+        showDialog('#popup-webrequestHeaderCleaningAll');
+}
+
+// ダイアログ表示
+function showDialog(selector)
+{
+    const $target = $(selector).fadeIn();
+    $target.siblings($target.attr('data-veil')).fadeIn();
 }
 
 // ダイアログ表示済み
@@ -107,8 +111,8 @@ function shownDialog(e)
 // ダイアログを閉じる
 function closeDialog(e)
 {
-    $(e.target).closest('.popup-panel').fadeOut();
-    $('#popup-veil').fadeOut();
+    const $target = $(e.target).closest('.popup-panel').fadeOut();
+    $target.siblings($target.attr('data-veil')).fadeOut();
 }
 
 // 設定ページを開く
