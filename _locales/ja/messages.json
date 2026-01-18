@@ -12,9 +12,6 @@
     //
     // sidebar.xhtml
     //
-    "openOption" : {
-        "message" : "設定"
-    },
     "title-naviHome" : {
         "message" : "ホーム"
     },

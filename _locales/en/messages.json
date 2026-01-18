@@ -12,9 +12,6 @@
     //
     // sidebar.xhtml
     //
-    "openOption" : {
-        "message" : "Options"
-    },
     "title-naviHome" : {
         "message" : "Home"
     },
