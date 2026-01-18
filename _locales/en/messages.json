@@ -40,9 +40,6 @@
     "options-h1-basic" : {
         "message" : "Basic Preference"
     },
-    "options-defaultScale" : {
-        "message" : "Initial zoon ratio on starting Side X Browser"
-    },
     "options-timelineAutoUpdate" : {
         "message" : "Update the home timeline automatically on the active window."
     },

@@ -89,9 +89,6 @@ function listenConfigChange()
 // ダイアログ初期化
 function initDialog()
 {
-    // popup-webrequestHeaderCleaningAll
-    if (!bg.config.getPref('popup-webrequestHeaderCleaningAll'))
-        showDialog('#popup-webrequestHeaderCleaningAll');
 }
 
 // ダイアログ表示
