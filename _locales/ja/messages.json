@@ -80,10 +80,10 @@
         "message" : "基本的な設定"
     },
     "options-homeURL" : {
-        "message" : "ホームページURL"
+        "message" : "新しいパネルのホームページURL"
     },
     "options-defaultScale" : {
-        "message" : "Side Browser起動時の拡大率"
+        "message" : "新しいパネルの拡大率"
     },
     "options-appendHttps" : {
         "message" : "スキーマを指定しなかった場合、http://の代わりにhttps://を追加する。"

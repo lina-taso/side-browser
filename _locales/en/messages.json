@@ -80,10 +80,10 @@
         "message" : "Basic Preference"
     },
     "options-homeURL" : {
-        "message" : "Homepage URL"
+        "message" : "Homepage URL of new panel"
     },
     "options-defaultScale" : {
-        "message" : "Initial zoon ratio on starting Side Browser"
+        "message" : "Initial zoom ratio of new panel"
     },
     "options-appendHttps" : {
         "message" : "Append https:// instead of http:// if no scheme is specified."
