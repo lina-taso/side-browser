@@ -212,6 +212,7 @@ button {
     pointer-events: none;
     flex: 1;
     height: 24px;
+    min-width: 0;
     padding: 2px;
     word-break: break-all;
     overflow: hidden;
