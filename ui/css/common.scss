@@ -179,6 +179,7 @@ button {
     display: flex;
     flex-direction: row;
     flex: 1;
+    min-width: 0;
     .run::before {
     }
 }
@@ -186,6 +187,7 @@ button {
 .address, .homeURL {
     flex: 1;
     height: 24px;
+    min-width: 0;
     padding: 2px;
     border-radius: 5px;
     color: var(--font-color);
