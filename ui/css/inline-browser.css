@@ -4,6 +4,9 @@ html, body, iframe {
     border-width: 0;
     overflow: hidden;
 }
+iframe {
+    border-radius: 8px;
+}
 
 * {
     margin: 0;
