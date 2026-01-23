@@ -102,8 +102,8 @@ const observer = new MutationObserver(mutations => {
     }
     // プレミアムリンク削除
     if (removePremiumLink) {
-        document.querySelectorAll('#layers > div:nth-of-type(2) [href="/i/premium_sign_up"]').forEach(ele => {
-            ele.parentElement.parentElement.style.visibility = 'hidden';
+        document.querySelectorAll('[href="/i/premium_sign_up"]').forEach(ele => {
+            ele.parentElement.style.display = 'none';
         });
     }
 });
