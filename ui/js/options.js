@@ -51,6 +51,9 @@ const detectChanges = () => {
         else {
             if (e.target.value !== '') {
                 bg.config.setPref(e.target.id, e.target.value);
+                // useragent
+                if (e.target.id == 'useragent')
+                    bg.updateChangingRule();
                 // ショートカット
                 if (e.target.id == 'shortcutKey')
                     bg.updateKeyboardShortcut();
@@ -58,9 +61,11 @@ const detectChanges = () => {
             // 空の場合初期化
             else {
                 bg.config.setPref(e.target.id);
-                // 初期値
-                if (e.target.id == 'useragent')
+                // useragent初期値
+                if (e.target.id == 'useragent') {
+                    bg.updateChangingRule();
                     $('#'+e.target.id).val(navigator.userAgent);
+                }
                 else
                     $('#'+e.target.id).val(bg.config.getPref(e.target.id));
             }
@@ -94,7 +99,7 @@ const localization = () => {
 // useragentテキストボックスの無効化
 const disableUseragentTextbox = (e) => {
     $('#useragent').prop('disabled', !e.target.checked);
-    bg.startHeaderChanging();
+    bg.updateChangingRule();
 };
 
 // shortcutの無効化
@@ -118,13 +123,13 @@ const confirmedChanging = (e) => {
     // 有効化
     if (e.target.checked) {
         // 切り替え
-        bg.startHeaderCleaning();
+        bg.updateCleaningRule();
         // service worker登録解除
         unregister();
     }
     // 無効化
     else {
-        bg.startHeaderCleaning();
+        bg.updateCleaningRule();
     }
 };
 

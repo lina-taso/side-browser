@@ -63,8 +63,9 @@
     "permissions" : [
         "browsingData",
         "webRequest",
-        "webRequestBlocking",
+        "declarativeNetRequestWithHostAccess",
         "storage",
+        "tabs",
         "<all_urls>"
     ]
 }
