@@ -60,6 +60,9 @@
     "title-naviOpenOption" : {
         "message" : "Open options page"
     },
+    "title-naviOpenTab" : {
+        "message" : "Open in new tab"
+    },
     "title-naviChangeHome" : {
         "message" : "Change homepage URL"
     },

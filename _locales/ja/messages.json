@@ -60,6 +60,9 @@
     "title-naviOpenOption" : {
         "message" : "設定を開く"
     },
+    "title-naviOpenTab" : {
+        "message" : "タブで開く"
+    },
     "title-naviChangeHome" : {
         "message" : "ホームページURLを変更"
     },
