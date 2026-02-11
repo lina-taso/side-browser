@@ -204,6 +204,7 @@ class frameUI {
         $panel.find('button.scale-minus').on('click', e => { this.scaleMinus(e); });
         $panel.find('button.scale-plus').on('click', e => { this.scalePlus(e); });
         $panel.find('button.open-option').on('click', () => { this.openOption(); });
+        $panel.find('button.open-tab').on('click', () => { this.openTab(); });
 
         // アドレスバー
         $panel.find('.textbox.address').on('keypress', e => {
@@ -382,6 +383,12 @@ class frameUI {
         this._$menuContainer.fadeOut();
         this._$menuContainer.siblings('.panel-veil').fadeOut();
         browser.runtime.openOptionsPage();
+    }
+    // タブで開く
+    openTab() {
+        this._$menuContainer.fadeOut();
+        this._$menuContainer.siblings('.panel-veil').fadeOut();
+        browser.tabs.create({ url : this.href });
     }
 
     // webrequestイベント

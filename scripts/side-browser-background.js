@@ -121,113 +121,119 @@ function onclicked() {
     browser.sidebarAction.setPanel({ panel : ORIGINURL });
 };
 
-// 余分なヘッダー削除
-const webrequestHeaderCleaning = details => {
-    // 自アドオンのリクエストのみ
-    if (details.documentUrl !== DOCUMENTURL) return {};
-
-    const headers = details.responseHeaders;
-    // ヘッダー書き換え
-    for (let i=0; i<headers.length; i++) {
-        let name = headers[i].name.toLowerCase();
-        // x-frame-optionsヘッダー、content-security-policyヘッダーを除去
-        if (name === 'x-frame-options'
-            || name === 'frame-options'
-            || name === 'frame-ancestors'
-            || name === 'content-security-policy') {
-            headers.splice(i, 1);
-            i--;
-            continue;
-        }
+// ヘッダー削除ルール
+const headerCleaningRule = {
+    id : 1,
+    priority : 1,
+    action : {
+        type : 'modifyHeaders',
+        responseHeaders: [
+            { operation : 'remove', header : 'x-frame-options' },
+            { operation : 'remove', header : 'frame-options' },
+            { operation : 'remove', header : 'frame-ancestors' },
+            { operation : 'remove', header : 'content-security-policy' }
+        ]
+    },
+    condition : {
+        urlFilter : "|*://*/*",
+        resourceTypes : [ 'sub_frame' ],
+        tabIds : [ -1 ]
     }
-    return { responseHeaders: headers };
 };
 
-// 余分なヘッダー削除
-const webrequestHeaderCleaningAll = details => {
-    const headers = details.responseHeaders;
-    // ヘッダー書き換え
-    for (let i=0; i<headers.length; i++) {
-        let name = headers[i].name.toLowerCase();
-        // x-frame-optionsヘッダー、content-security-policyヘッダーを除去
-        if (name === 'x-frame-options'
-            || name === 'frame-options'
-            || name === 'frame-ancestors'
-            || name === 'content-security-policy') {
-            headers.splice(i, 1);
-            i--;
-            continue;
-        }
+// ヘッダー削除ルール
+const headerCleaningAllRule = {
+    id : 2,
+    priority : 1,
+    action : {
+        type : 'modifyHeaders',
+        responseHeaders: [
+            { operation : 'remove', header : 'x-frame-options' },
+            { operation : 'remove', header : 'frame-options' },
+            { operation : 'remove', header : 'frame-ancestors' },
+            { operation : 'remove', header : 'content-security-policy' }
+        ]
+    },
+    condition : {
+        urlFilter : "|*://*/*",
+        resourceTypes : [ 'script', 'xmlhttprequest' ],
+        tabIds : [ -1 ]
     }
-    return { responseHeaders: headers };
 };
 
-// ヘッダー削除開始
-var startHeaderCleaning = () => {
-    browser.webRequest.onHeadersReceived.removeListener(webrequestHeaderCleaning);
-    browser.webRequest.onHeadersReceived.removeListener(webrequestHeaderCleaningAll);
+// ヘッダー書換ルール
+const getHeaderChangingRule = () => {
+    return {
+        id : 3,
+        priority : 1,
+        action : {
+            type : 'modifyHeaders',
+            requestHeaders : [
+                { operation : 'set', header : 'user-agent',
+                  value : config.getPref('useragent') || navigator.userAgent }
+            ]
+        },
+        condition : {
+            urlFilter : "|*://*/*",
+            resourceTypes : [ 'sub_frame' ],
+            tabIds : [ -1 ]
+        }
+    };
+};
 
+// ヘッダー削除ルール適用
+var updateCleaningRule = () => {
     if (config.getPref('webrequestHeaderCleaningAll') === false) {
+        browser.declarativeNetRequest.updateSessionRules({
+            removeRuleIds : [1, 2],
+            addRules : [headerCleaningRule]
+        });
     }
     else {
-        // レスポンス受信時（スクリプト）
-        browser.webRequest.onHeadersReceived.addListener(
-            webrequestHeaderCleaningAll,
-            { urls : [ 'https://twitter.com/*', 'https://x.com/*' ],
-              types : [ 'sub_frame', 'xmlhttprequest' ],
-              tabId : -1 // タブ以外
-            },
-            [ 'blocking', 'responseHeaders' ]
-        );
+        browser.declarativeNetRequest.updateSessionRules({
+            removeRuleIds : [1, 2],
+            addRules : [headerCleaningRule, headerCleaningAllRule]
+        });
     }
 };
 
-// ユーザエージェント書き換え
-const webrequestHeaderChangingUseragent = details => {
-    // 自アドオンのリクエストのみ
-    if (details.documentUrl !== DOCUMENTURL) return {};
-
-    const headers = details.requestHeaders;
-    // ヘッダー書き換え
-    for (let i=0; i<headers.length; i++) {
-        let name = headers[i].name.toLowerCase();
-        // UserAgentヘッダーを書き換え
-        if (name === 'user-agent') {
-            headers[i].value = config.getPref('useragent') || navigator.userAgent;
-            break;
-        }
+// ヘッダー書換ルール適用
+var updateChangingRule = () => {
+    if (config.getPref('webrequestHeaderChangingUseragent') === false) {
+        browser.declarativeNetRequest.updateSessionRules({
+            removeRuleIds : [3]
+        });
     }
-
-    return { requestHeaders : headers };
-};
-
-// ヘッダー書き換え開始
-var startHeaderChanging = () => {
+    else {
+        browser.declarativeNetRequest.updateSessionRules({
+            removeRuleIds : [3],
+            addRules : [getHeaderChangingRule()]
+        });
+    }
 };
 
 // ショートカット
 var updateKeyboardShortcut = () => {
     if (config.getPref('enableKeyboardShortcut') === true) {
         browser.commands.update({
-            name :"_execute_sidebar_action",
-            shortcut :"Ctrl+Alt+" + config.getPref('shortcutKey')
+            name : '_execute_sidebar_action',
+            shortcut : 'Ctrl+Alt+' + config.getPref('shortcutKey')
         });
     }
     else {
         browser.commands.update({
-            name :"_execute_sidebar_action",
-            shortcut :""
+            name : '_execute_sidebar_action',
+            shortcut : ''
         });
     }
 };
-
 
 // コンフィグ取得・取得後処理
 config.initialize().then(() => {
     // unregister service worker
     browser.browsingData.remove({ hostnames : ['twitter.com', 'x.com'] }, { serviceWorkers: true });
 
-    startHeaderCleaning();
-    startHeaderChanging();
+    updateCleaningRule();
+    updateChangingRule();
     updateKeyboardShortcut();
 });

@@ -33,6 +33,9 @@
     "title-naviOpenOption" : {
         "message" : "設定を開く"
     },
+    "title-naviOpenTab" : {
+        "message" : "タブで開く"
+    },
 
     //
     // options.xhtml

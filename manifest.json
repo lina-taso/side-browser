@@ -63,7 +63,7 @@
     "permissions" : [
         "browsingData",
         "webRequest",
-        "webRequestBlocking",
+        "declarativeNetRequestWithHostAccess",
         "storage",
         "tabs",
         "https://twitter.com/*",
