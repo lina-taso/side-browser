@@ -10,18 +10,20 @@
     </head>
 
     <body>
+        <div id="panel-container"></div>
+
         <div id="popup-veil" style="display: none;" />
 
         <div id="popup-webrequestHeaderCleaningAll" class="popup-panel" style="display: none;" data-veil="#popup-veil">
             <p class="pre-wrap" data-string="webrequestHeaderCleaningAll-description" />
             <img src="" data-string-src="webrequestHeaderCleaningAll-imgsrc" />
-            <div class="spacer" />
             <div class="popup-buttons-vertical">
                 <button class="close-dialog" tabindex="1" data-string="webrequestHeaderCleaningAll-accept" />
                 <button class="open-option" tabindex="1" data-string="webrequestHeaderCleaningAll-option" />
             </div>
         </div>
 
+        <!-- .template.browser-panel -->
         <div id=""
              class="panel browser-panel template"
              data-inner-frameid=""
@@ -51,6 +53,12 @@
                     <i class="fa-solid fa-fw fa-bars" />
                 </button>
             </div>
+
+            <div class="browser-container">
+                <iframe class="browser" referrerpolicy="no-referrer" src="inline-browser.xhtml"></iframe>
+            </div>
+
+            <div class="browser-panel-handler" />
 
             <div class="panel-veil" style="display: none;" />
 
@@ -100,14 +108,6 @@
                 </div>
             </div>
 
-            <div class="browser-container">
-                <iframe class="browser" referrerpolicy="no-referrer" src="inline-browser.xhtml"></iframe>
-            </div>
-
-            <div class="browser-panel-handler" />
-
-        </div> <!-- /.browser-panel -->
-
-        <div id="panel-container"></div>
+        </div> <!-- /.template.browser-panel -->
     </body>
 </html>

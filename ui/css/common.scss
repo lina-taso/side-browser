@@ -1,6 +1,12 @@
 @charset "UTF-8";
 @namespace html url(http://www.w3.org/1999/xhtml);
 
+:root {
+    --spacing-bar: 2px;
+    --spacing-popup: 8px;
+    --spacing-menu: 4px;
+}
+
 @media (prefers-color-scheme: light) {
     :root {
         --background-color: white;
@@ -106,7 +112,6 @@ button {
         width: 100%;
         padding: 2px 0;
         position: absolute;
-        z-index: 1;
         bottom: 0;
         display: flex;
         align-items: center;
@@ -120,6 +125,7 @@ button {
         &.resizing {
             padding: 102px 0;
             margin: -100px 0;
+            z-index: 100;
         }
     }
 }
@@ -132,28 +138,28 @@ button {
         width: 24px;
     }
     > * {
-        margin-left: 1px;
-        margin-right: 1px;
+        margin-left: calc(var(--spacing-bar) / 2);
+        margin-right: calc(var(--spacing-bar) / 2);
     }
     > *:first-child {
-        margin-left: 1px;
+        margin-left: 0 !important;
     }
     > *:last-child {
-        margin-right: 1px;
+        margin-right: 0 !important;
     }
 
     > .bar {
         > *:first-child {
-            margin-left: 0;
+            margin-left: 0 !important;
         }
         > *:last-child {
-            margin-right: 0;
+            margin-right: 0 !important;
         }
     }
 }
 
 .navigation-bar {
-    margin-top: 1px;
+    margin: var(--spacing-bar);
 
     .prev {
     }
@@ -234,34 +240,44 @@ button {
     flex-direction: column;
 
     position: absolute;
-    z-index: 10;
     top: 30px;
     right: 5px;
-    padding: 2px;
 
-    cursor: default;
+    padding: var(--spacing-menu);
     border: .5px solid var(--border-color);
     border-radius: 8px;
     color: var(--font-color);
     background-color: var(--background-color);
     box-shadow: var(--shadow-color) 2px 2px 4px;
 
-    .menu-item {
-        margin: 2px;
+    cursor: default;
 
-        .browser-panel:last-child &.reset-height {
-            display: none;
-        }
-        .browser-panel:first-child &.close-panel {
-            display: none;
-        }
+    .bar > * {
+        margin-left: calc(var(--spacing-menu) / 2);
+        margin-right: calc(var(--spacing-menu) / 2);
+    }
+    > * {
+        margin-top: calc(var(--spacing-menu) / 2);
+        margin-bottom: calc(var(--spacing-menu) / 2);
+    }
+    > *:first-child {
+        margin-top: 0;
+    }
+    > *:last-child {
+        margin-bottom: 0;
+    }
+
+    .browser-panel:last-child .menu-item.reset-height {
+        display: none;
+    }
+    .browser-panel:first-child .menu-item.close-panel {
+        display: none;
     }
     .scale-bar {
         align-items: center;
         justify-content: center;
 
         .scale {
-            margin: 0 2px;
             min-width: 4em;
             text-align: center;
             &::after {
@@ -281,7 +297,6 @@ button {
 
 #popup-veil {
     position: absolute;
-    z-index: 100;
     top: 0;
     left: 0;
     width: 100%;
@@ -295,15 +310,13 @@ button {
     flex-direction: column;
 
     position: absolute;
-    z-index: 100;
     top: 50%;
     left: 50%;
     width: 80vw;
-    min-height: 10vh;
     max-height: 70vh;
     transform: translate(-50%, -50%);
 
-    padding: 8px 10px;
+    padding: var(--spacing-popup);
     border: .5px solid var(--border-color);
     border-radius: 8px;
     color: var(--font-color);
@@ -312,15 +325,27 @@ button {
     box-shadow: var(--shadow-color) 2px 2px 4px;
     overflow-x: auto;
 
-    > * {
-        margin: 2px 0;
+    .bar > * {
+        margin-left: calc(var(--spacing-popup) / 2);
+        margin-right: calc(var(--spacing-popup) / 2);
     }
+    > * {
+        margin-top: calc(var(--spacing-popup) / 2);
+        margin-bottom: calc(var(--spacing-popup) / 2);
+    }
+    > *:first-child {
+        margin-top: 0;
+    }
+    > *:last-child {
+        margin-bottom: 0;
+    }
+
     > img {
         width: 100%;
         border-radius: 10px;
         align-self: center;
     }
-    > img[data-string-src=webrequestHeaderCleaningAll-imgsrc]{
+    > img[data-string-src=webrequestHeaderCleaningAll-imgsrc] {
         max-width: 360px;
     }
 }
@@ -329,16 +354,6 @@ button {
 .popup-buttons-vertical {
     display: flex;
 
-    > * {
-        margin-left: 1px;
-        margin-right: 1px;
-    }
-    > *:first-child {
-        margin-left: 1px;
-    }
-    > *:last-child {
-        margin-right: 1px;
-    }
     button {
         width: unset;
         flex: 1;
@@ -346,7 +361,29 @@ button {
 }
 .popup-buttons-horizontal {
     flex-direction: row;
+
+    > * {
+        margin-left: calc(var(--spacing-popup) / 2);
+        margin-right: calc(var(--spacing-popup) / 2);
+    }
+    > *:first-child {
+        margin-left: 0;
+    }
+    > *:last-child {
+        margin-right: 0;
+    }
 }
 .popup-buttons-vertical {
     flex-direction: column;
+
+    > * {
+        margin-top: calc(var(--spacing-popup) / 2);
+        margin-bottom: calc(var(--spacing-popup) / 2);
+    }
+    > *:first-child {
+        margin-top: 0;
+    }
+    > *:last-child {
+        margin-bottom: 0;
+    }
 }
