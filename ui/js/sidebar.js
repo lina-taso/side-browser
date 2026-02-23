@@ -204,6 +204,7 @@ class frameUI {
         $panel.find('.panel-veil').on('click', () => { this.panelVeil(); });
         $panel.find('button.scale-minus').on('click', e => { this.scaleMinus(e); });
         $panel.find('button.scale-plus').on('click', e => { this.scalePlus(e); });
+        $panel.find('button.scale').on('click', e => { this.scaleReset(e); });
         $panel.find('button.open-option').on('click', () => { this.openOption(); });
         $panel.find('button.open-tab').on('click', () => { this.openTab(); });
         $panel.find('button.change-home').on('click', () => { this.openChangeHomePanel(); });
@@ -367,6 +368,16 @@ class frameUI {
             this.scale = 100;
             setting.scale = 100;
         }
+        // 設定値保存
+        this.config = setting;
+    }
+    // 拡大率リセット
+    scaleReset(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const setting = this.config;
+        this.scale = 100;
+        setting.scale = 100;
         // 設定値保存
         this.config = setting;
     }
