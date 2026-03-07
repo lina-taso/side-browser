@@ -104,7 +104,10 @@
         "message" : "User-Agent"
     },
     "options-enableKeyboardShortcut" : {
-        "message" : "サイドバーの開閉用にキーボードショートカットを有効にする。"
+        "message" : "サイドバー開閉用のキーボードショートカットはFirefoxの標準機能で設定します。"
+    },
+    "options-openShortcutSettings" : {
+        "message" : "Firefoxのショートカット設定画面を開く"
     },
     "options-h1-advanced" : {
         "message" : "高度な設定"

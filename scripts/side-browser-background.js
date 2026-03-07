@@ -197,25 +197,8 @@ var updateChangingRule = () => {
     }
 };
 
-// ショートカット
-var updateKeyboardShortcut = () => {
-    if (config.getPref('enableKeyboardShortcut') === true) {
-        browser.commands.update({
-            name : '_execute_sidebar_action',
-            shortcut : 'Ctrl+Alt+' + config.getPref('shortcutKey')
-        });
-    }
-    else {
-        browser.commands.update({
-            name : '_execute_sidebar_action',
-            shortcut : ''
-        });
-    }
-};
-
 // コンフィグ取得・取得後処理
 config.initialize().then(() => {
     updateCleaningRule();
     updateChangingRule();
-    updateKeyboardShortcut();
 });

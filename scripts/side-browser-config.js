@@ -59,8 +59,6 @@ const defaultconfig = {
     xdomainTransition : false,
     webrequestHeaderChangingUseragent : false,
     useragent : '',
-    enableKeyboardShortcut : false,
-    shortcutKey : 'T',
     webrequestHeaderCleaningAll : false,
     // debug options
     changeScreen : false,

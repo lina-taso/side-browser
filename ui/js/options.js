@@ -36,7 +36,6 @@ const restorePrefs = () => {
 // 初期化
 const initPrefs = () => {
     $('#useragent').prop('disabled', !bg.config.getPref('webrequestHeaderChangingUseragent'));
-    $('#shortcutKey').prop('disabled', !bg.config.getPref('enableKeyboardShortcut'));
     if (!$('#useragent').val()) $('#useragent').val(navigator.userAgent);
 };
 
@@ -54,9 +53,6 @@ const detectChanges = () => {
                 // useragent
                 if (e.target.id == 'useragent')
                     bg.updateChangingRule();
-                // ショートカット
-                if (e.target.id == 'shortcutKey')
-                    bg.updateKeyboardShortcut();
             }
             // 空の場合初期化
             else {
@@ -78,7 +74,7 @@ const vivify = () => {
     $('#webrequestHeaderCleaningAll').on('click', confirmChanging);
     $('#webrequestHeaderCleaningAll').on('change', confirmedChanging);
     $('#webrequestHeaderChangingUseragent').on('change', disableUseragentTextbox);
-    $('#enableKeyboardShortcut').on('change', disableShortcutKey);
+    $('#openShortcutSettings').on('click', () => { browser.commands.openShortcutSettings(); });
     $('#unregister').on('click', unregister);
 };
 
@@ -100,12 +96,6 @@ const localization = () => {
 const disableUseragentTextbox = (e) => {
     $('#useragent').prop('disabled', !e.target.checked);
     bg.updateChangingRule();
-};
-
-// shortcutの無効化
-const disableShortcutKey = (e) => {
-    $('#shortcutKey').prop('disabled', !e.target.checked);
-    bg.updateKeyboardShortcut();
 };
 
 // webrequestHeaderCleaningAll変更確認 on click

@@ -104,7 +104,10 @@
         "message" : "User-Agent"
     },
     "options-enableKeyboardShortcut" : {
-        "message" : "Enable keyboard shortcut to open and close the sidebar."
+        "message" : "Set the keyboard shortcut for toggling the sidebar in Firefox's built-in settings."
+    },
+    "options-openShortcutSettings" : {
+        "message" : "Open the Firefox shortcut settings page"
     },
     "options-h1-advanced" : {
         "message" : "Advanced Preference"
