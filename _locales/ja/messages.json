@@ -62,7 +62,10 @@
         "message" : "(*) ホームを開くときフォロータイムラインを最初に表示する。"
     },
     "options-enableKeyboardShortcut" : {
-        "message" : "サイドバーの開閉用にキーボードショートカットを有効にする。"
+        "message" : "サイドバー開閉用のキーボードショートカットはFirefoxの標準機能で設定します。"
+    },
+    "options-openShortcutSettings" : {
+        "message" : "Firefoxのショートカット設定画面を開く"
     },
     "options-reloadRequired" : {
         "message" : "(*)... 設定を反映するにはSide X Browserのホームボタンか更新ボタンをクリックしてページを再読み込みする必要があります。"

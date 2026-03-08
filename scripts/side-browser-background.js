@@ -14,7 +14,7 @@ var FRAMES = {},
 
 browser.runtime.onStartup.addListener(startup);
 browser.runtime.onInstalled.addListener(install);
-//browser.runtime.onConnect.addListener(connect);
+browser.runtime.onConnect.addListener(connect);
 browser.runtime.onMessage.addListener(message);
 browser.browserAction.onClicked.addListener(onclicked);
 
@@ -34,83 +34,118 @@ function install(details)
     return Promise.resolve();
 }
 
-function message(message, sender, sendResponse)
+function connect(port)
 {
-    if (!sender.tab) {
-        DEBUG && console.log('onmessage', message, sender);
-        switch (message.type) {
-        case 'init':
-            let res = {
-                observeUrlChange  : true,
-                changeScreen      : config.getPref('changeScreen'),
-                width             : config.getPref('changeScreenWidth'),
-                height            : config.getPref('changeScreenHeight'),
-                changeUseragent   : config.getPref('changeUseragent'),
-                useragent         : config.getPref('useragent') || navigator.userAgent,
-                xdomainTransition : config.getPref('xdomainTransition')
-            };
-            // for side-twitter
-            res.timelineUpdateInterval    = config.getPref('timelineUpdateInterval');
-            res.timelineRemoveAds         = config.getPref('timelineRemoveAds');
-            res.timelineRemovePremiumLink = config.getPref('timelineRemovePremiumLink');
-            res.timelineShowFollowTlFirst = config.getPref('timelineShowFollowTlFirst');
-            // 親フレーム
-            if (FRAMES[message.frameId]) {
-                sendResponse(res);
-            }
-            // 子フレーム？
-            else {
-                for (let frame in FRAMES) {
-                    // 子フレーム追加
-                    if (FRAMES[frame].addFrameId(message.frameId, message.parentId)) {
-                        res.observeUrlChange = false;
-                        sendResponse(res);
-                    }
-                }
-            }
-            break;
-        case 'loaded':
-            // 親フレームの場合
-            if (!FRAMES[message.frameId]) break;
-            // 読み込み完了
-            FRAMES[message.frameId]._loading = false;
-            break;
-        case 'unload':
-            // 子フレームの場合
-            if (FRAMES[message.frameId]) break;
-            // フレーム削除
-            for (let frame in FRAMES) {
-                if (FRAMES[frame].deleteFrameId(message.frameId)) break;
-            }
-            break;
-        case 'url_change':
-            // 親フレームの場合
-            if (!FRAMES[message.frameId]) break;
-            // URL変更検知
-            FRAMES[message.frameId].href = message.url;
-            break;
-        case 'url_load':
-            for (let frame in FRAMES) {
-                if (FRAMES[frame].showFrameIds().includes(message.frameId)) {
-                    // 親フレームのURL遷移
-                    FRAMES[frame].hrefLoad = message.url;
-                    break;
-                }
-            }
-            break;
-        case 'update_timeline':
-            if (!config.getPref('timelineAutoUpdate')) break;
-            browser.windows.get(FRAMES[message.frameId]._windowId).then((win) => {
-                // フォーカスされたウィンドウのみ
-                if (win.focused) {
-                    sendResponse({ update : win.focused });
-                }
+    if (!port.sender.tab) {
+        DEBUG && console.log('onconnect', port);
+        const frameId = parseInt(port.name);
+
+        // init_response.data
+        const data = {
+            observeUrlChange  : true,
+            changeScreen      : config.getPref('changeScreen'),
+            width             : config.getPref('changeScreenWidth'),
+            height            : config.getPref('changeScreenHeight'),
+            changeUseragent   : config.getPref('changeUseragent'),
+            useragent         : config.getPref('useragent') || navigator.userAgent,
+            xdomainTransition : config.getPref('xdomainTransition')
+        };
+
+        // for side-twitter
+        data.timelineUpdateInterval    = config.getPref('timelineUpdateInterval');
+        data.timelineRemoveAds         = config.getPref('timelineRemoveAds');
+        data.timelineRemovePremiumLink = config.getPref('timelineRemovePremiumLink');
+        data.timelineShowFollowTlFirst = config.getPref('timelineShowFollowTlFirst');
+
+        // 親フレーム
+        if (FRAMES[frameId]) {
+            // Portイベント追加・保存する
+            port.onMessage.addListener(message);
+            port.onDisconnect.addListener(disconnect);
+            FRAMES[frameId]._port = port;
+
+            port.postMessage({
+                type : 'init_response',
+                data : data
             });
-            return true;
-        case 'log':
-            console.log(Boolean(message.frameId && FRAMES[message.frameId]), message);
-            break;
         }
+        // 子フレーム？
+        else {
+            for (let frame in FRAMES) {
+                // 子フレーム追加
+                if (FRAMES[frame].addFrameId(frameId, message.parentId)) {
+                    // Portイベント追加・保存しない
+                    port.onMessage.addListener(message);
+                    port.onDisconnect.addListener(disconnect);
+
+                    data.observeUrlChange = false;
+                    port.postMessage({
+                        type : 'init_response',
+                        data : data
+                    });
+                }
+            }
+        }
+    }
+}
+
+function message(message, port)
+{
+    DEBUG && console.log('onmessage', message, port);
+    const frameId = parseInt(port.name);
+
+    switch (message.type) {
+    case 'loaded':
+        // 親フレームの場合
+        if (!FRAMES[frameId]) break;
+        // 読み込み完了
+        FRAMES[frameId]._loading = false;
+        break;
+    case 'unload':
+        // 子フレームの場合
+        if (FRAMES[frameId]) break;
+        // フレーム削除
+        for (let frame in FRAMES) {
+            if (FRAMES[frame].deleteFrameId(frameId)) break;
+        }
+        break;
+    case 'url_change':
+        // 親フレームの場合
+        if (!FRAMES[frameId]) break;
+        // URL変更検知
+        FRAMES[frameId].href = message.data.url;
+        break;
+    case 'url_load':
+        for (let frame in FRAMES) {
+            if (FRAMES[frame].showFrameIds().includes(frameId)) {
+                // 親フレームのURL遷移
+                FRAMES[frame].hrefLoad = message.data.url;
+                break;
+            }
+        }
+        break;
+    case 'update_timeline':
+        if (!config.getPref('timelineAutoUpdate')) break;
+        browser.windows.get(FRAMES[frameId]._windowId).then((win) => {
+            // フォーカスされたウィンドウのみ
+            if (win.focused) {
+                port.postMessage({ type : 'update_timeline_response' });
+            }
+        });
+        break;
+    case 'log':
+        console.log(frameId, message, port);
+        break;
+    }
+}
+
+function disconnect(port) {
+    DEBUG && console.log('ondisconnect', port);
+    const frameId = parseInt(port.name);
+
+    // 親フレーム
+    if (FRAMES[frameId]) {
+        FRAMES[frameId]._port = undefined;
     }
     return false;
 }
@@ -212,22 +247,6 @@ var updateChangingRule = () => {
     }
 };
 
-// ショートカット
-var updateKeyboardShortcut = () => {
-    if (config.getPref('enableKeyboardShortcut') === true) {
-        browser.commands.update({
-            name : '_execute_sidebar_action',
-            shortcut : 'Ctrl+Alt+' + config.getPref('shortcutKey')
-        });
-    }
-    else {
-        browser.commands.update({
-            name : '_execute_sidebar_action',
-            shortcut : ''
-        });
-    }
-};
-
 // コンフィグ取得・取得後処理
 config.initialize().then(() => {
     // unregister service worker
@@ -235,5 +254,4 @@ config.initialize().then(() => {
 
     updateCleaningRule();
     updateChangingRule();
-    updateKeyboardShortcut();
 });

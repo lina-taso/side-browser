@@ -36,7 +36,6 @@ const restorePrefs = () => {
 // 初期化
 const initPrefs = () => {
     $('#useragent').prop('disabled', !bg.config.getPref('webrequestHeaderChangingUseragent'));
-    $('#shortcutKey').prop('disabled', !bg.config.getPref('enableKeyboardShortcut'));
     if (!$('#useragent').val()) $('#useragent').val(navigator.userAgent);
     // for side-twitter
     $('#timelineUpdateInterval').prop('disabled', !bg.config.getPref('timelineAutoUpdate'));
@@ -56,9 +55,6 @@ const detectChanges = () => {
                 // useragent
                 if (e.target.id == 'useragent')
                     bg.updateChangingRule();
-                // ショートカット
-                if (e.target.id == 'shortcutKey')
-                    bg.updateKeyboardShortcut();
             }
             // 空の場合初期化
             else {
@@ -80,7 +76,7 @@ const vivify = () => {
     $('#webrequestHeaderCleaningAll').on('click', confirmChanging);
     $('#webrequestHeaderCleaningAll').on('change', confirmedChanging);
     $('#webrequestHeaderChangingUseragent').on('change', disableUseragentTextbox);
-    $('#enableKeyboardShortcut').on('change', disableShortcutKey);
+    $('#openShortcutSettings').on('click', () => { browser.commands.openShortcutSettings(); });
     $('#unregister').on('click', unregister);
     // for side-twitter
     $('#timelineAutoUpdate').on('change', disableUpdateIntervalTextbox);
@@ -106,16 +102,9 @@ const disableUseragentTextbox = (e) => {
     bg.updateChangingRule();
 };
 
-
 // updateIntervalテキストボックスの無効化
 const disableUpdateIntervalTextbox = (e) => {
     $('#timelineUpdateInterval').prop('disabled', !e.target.checked);
-};
-
-// shortcutの無効化
-const disableShortcutKey = (e) => {
-    $('#shortcutKey').prop('disabled', !e.target.checked);
-    bg.updateKeyboardShortcut();
 };
 
 // webrequestHeaderCleaningAll変更確認 on click

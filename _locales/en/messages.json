@@ -62,7 +62,10 @@
         "message" : "(*) Show Following timeline first when opening Home."
     },
     "options-enableKeyboardShortcut" : {
-        "message" : "Enable keyboard shortcut to open and close the sidebar."
+        "message" : "Set the keyboard shortcut for toggling the sidebar in Firefox's built-in settings."
+    },
+    "options-openShortcutSettings" : {
+        "message" : "Open the Firefox shortcut settings page"
     },
     "options-reloadRequired" : {
         "message" : "(*)... To apply settings refreshing the page is required by clicking Home or Refresh buttons of Side X Browser."
