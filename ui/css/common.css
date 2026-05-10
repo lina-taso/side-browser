@@ -11,7 +11,8 @@
     --input-background-color: whitesmoke;
     --shadow-color: gray;
     --border-color: darkgray;
-    --font-color: #202020; } }
+    --font-color: #202020;
+    --disabled-font-color: #whitesmoke; } }
 @media (prefers-color-scheme: dark) {
   :root {
     --background-color: #282833;
@@ -19,10 +20,12 @@
     --input-background-color: #3c3c4d;
     --shadow-color: gray;
     --border-color: #777799;
-    --font-color: #e1e1e1; } }
+    --font-color: #e1e1e1;
+    --disabled-font-color: #3c3c4d; } }
 html, body {
   width: 100%;
   height: 100%;
+  color: var(--font-color);
   background-color: var(--background-color); }
 
 body {
@@ -55,6 +58,8 @@ button {
   button:focus {
     background-color: var(--hover-background-color);
     outline: none; }
+  button[disabled] {
+    color: var(--disabled-font-color); }
 
 .fa-solid {
   font-size: 16px; }
@@ -122,6 +127,17 @@ button {
 
 .navigation-bar {
   margin: var(--spacing-bar); }
+  .navigation-bar .unmanageHistory {
+    font-size: 80%;
+    margin: 6px 0;
+    cursor: help; }
+    .navigation-bar .unmanageHistory::before {
+      transform: rotate(-30deg);
+      display: block; }
+    .browser-panel:only-of-type .navigation-bar .unmanageHistory {
+      display: none; }
+    .browser-panel[data-manage-history="true"] .navigation-bar .unmanageHistory {
+      display: none; }
   .browser-panel[data-loading="false"] .navigation-bar .refresh .fa-xmark {
     display: none; }
   .browser-panel[data-loading="true"] .navigation-bar .refresh .fa-rotate-right {

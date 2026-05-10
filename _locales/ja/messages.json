@@ -36,6 +36,9 @@
     "changeHomePanel-title-useNowLocation" : {
         "message" : "現在のURLを使用"
     },
+    "title-unmanageHistory" : {
+        "message" : "前へ・次へボタンは全パネルで共有されます。\n（詳細は設定ページを確認してください。）"
+    },
     "title-naviPrev" : {
         "message" : "前へ"
     },
@@ -96,6 +99,21 @@
     },
     "options-xdomainTransition-description" : {
         "message" : "チェックを外すと、異なるドメイン名のリンク先はタブで開きます。\nチェックすると、Side Browser内で遷移しますがリファラーがセットされません。"
+    },
+    "options-manageHistory" : {
+        "message" : "パネル毎に履歴を管理する。"
+    },
+    "options-manageHistory-description-sec1-title" : {
+        "message" : "チェックOFF時："
+    },
+    "options-manageHistory-description-sec1" : {
+        "message" : "ブラウザ標準の前へ・次へ機能を使用します。\nブラウザの仕様上、サイドバー中の全パネルで一つの履歴スタックを共用するため、前へ・次へボタンは全パネルで共有されます。\nまた、履歴を遡っている途中でパネルを閉じた場合、履歴を進めることができなくなることがあります。"
+    },
+    "options-manageHistory-description-sec2-title" : {
+        "message" : "チェックON時："
+    },
+    "options-manageHistory-description-sec2" : {
+        "message" : "Side Browserでパネル毎に履歴を管理します。\n前へ・次へボタンがパネル毎に独立する代わりに、前へ・次へボタンを押すたびにページの再読み込みが発生します。\nシングルページアプリケーション（SPA）やフレームが使用されたウェブサイト等では、画面切り替えに通常より時間が掛かったり、正常に遷移しない可能性があります。\nまた、Side Browserの前へ・次へボタンではなく、ウェブページ内の戻るボタン等を使用すると、ブラウザ標準のページ遷移が行われるため、他のパネルでページ遷移が発生する可能性がありますのでご了承下さい。"
     },
     "options-webrequestHeaderChangingUseragent" : {
         "message" : "User-Agentヘッダーを書き換える。"

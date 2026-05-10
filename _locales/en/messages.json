@@ -36,6 +36,9 @@
     "changeHomePanel-title-useNowLocation" : {
         "message" : "Use current URL"
     },
+    "title-unmanageHistory" : {
+        "message" : "The Prev/Next buttons are shared across all panels.\n(For details, please check the settings page.)"
+    },
     "title-naviPrev" : {
         "message" : "Prev"
     },
@@ -96,6 +99,21 @@
     },
     "options-xdomainTransition-description" : {
         "message" : "If unchecked, these URLs will open in the tab.\nIf checked, transitions will occur inside Side Browser, but referers will not be set."
+    },
+    "options-manageHistory" : {
+        "message" : "Manage history per panel."
+    },
+    "options-manageHistory-description-sec1-title" : {
+        "message" : "When unchecked:"
+    },
+    "options-manageHistory-description-sec1" : {
+        "message" : "Uses the browser's standard Prev/Next functionality.\nDue to browser specifications, all panels in the sidebar share a single history stack. Therefore, the Prev/Next buttons are shared across all panels.\nAdditionally, if you close a panel while navigating through the history, you may no longer be able to move forward in the history."
+    },
+    "options-manageHistory-description-sec2-title" : {
+        "message" : "When checked:"
+    },
+    "options-manageHistory-description-sec2" : {
+        "message" : "Side Browser manages the history independently for each panel.\nWhile this makes the Prev/Next buttons work independently per panel, pressing these buttons will cause the page to reload each time.\nOn Single Page Application (SPA)-style websites or websites that use frames, page transitions may take longer than usual or may not function properly.\nPlease also note that if you use the prev button inside the webpage itself (instead of Side Browser's Prev/Next buttons), the browser's standard page navigation will be triggered, which may cause page transitions in other panels."
     },
     "options-webrequestHeaderChangingUseragent" : {
         "message" : "Replace User-Agent header."

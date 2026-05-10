@@ -57,6 +57,7 @@ const defaultconfig = {
     defaultScale : 100,
     appendHttps : true,
     xdomainTransition : false,
+    manageHistory : false,
     webrequestHeaderChangingUseragent : false,
     useragent : '',
     webrequestHeaderCleaningAll : false,

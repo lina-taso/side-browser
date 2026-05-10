@@ -15,6 +15,7 @@
         --shadow-color: gray;
         --border-color: darkgray;
         --font-color: #202020;
+        --disabled-font-color: #whitesmoke;
     }
 }
 @media (prefers-color-scheme: dark) {
@@ -25,12 +26,14 @@
         --shadow-color: gray;
         --border-color: #777799;
         --font-color: #e1e1e1;
+        --disabled-font-color: #3c3c4d;
     }
 }
 
 html, body {
     width: 100%;
     height: 100%;
+    color: var(--font-color);
     background-color: var(--background-color);
 }
 
@@ -68,6 +71,9 @@ button {
     &:focus {
         background-color: var(--hover-background-color);
         outline: none;
+    }
+    &[disabled] {
+        color: var(--disabled-font-color);
     }
 }
 
@@ -161,6 +167,22 @@ button {
 .navigation-bar {
     margin: var(--spacing-bar);
 
+    .unmanageHistory {
+        font-size: 80%;
+        margin: 6px 0;
+        cursor: help;
+        &::before {
+            transform: rotate(-30deg);
+            display: block;
+        }
+
+        .browser-panel:only-of-type & {
+            display: none;
+        }
+        .browser-panel[data-manage-history="true"] & {
+            display: none;
+        }
+    }
     .prev {
     }
     .next {
