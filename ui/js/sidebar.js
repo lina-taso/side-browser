@@ -513,6 +513,9 @@ class frameUI {
         parentId = parseInt(parentId);
         // parentIdが存在するか
         if (this.showFrameIds().includes(parentId)) {
+            // 既に存在する
+            if (this.showFrameIds().includes(frameId)) return false;
+            // 追加
             this._subframeIds.push(frameId);
             return true;
         }

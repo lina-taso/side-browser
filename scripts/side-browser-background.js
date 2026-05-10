@@ -38,7 +38,8 @@ function connect(port)
 {
     if (!port.sender.tab) {
         DEBUG && console.log('onconnect', port);
-        const frameId = parseInt(port.name);
+        const frameId = parseInt(port.name.split('-')[0]),
+              parentId = parseInt(port.name.split('-')[1]);
 
         // init_response.data
         const data = {
@@ -52,7 +53,7 @@ function connect(port)
         };
 
         // 親フレーム
-        if (FRAMES[frameId]) {
+        if (parentId === 0 && FRAMES[frameId]) {
             // Portイベント追加・保存する
             port.onMessage.addListener(message);
             port.onDisconnect.addListener(disconnect);
@@ -64,10 +65,25 @@ function connect(port)
             });
         }
         // 子フレーム？
-        else {
+        else if (parentId !== 0){
+            // 親フレームがルート
+            if (FRAMES[parentId]) {
+                if (FRAMES[parentId].addFrameId(frameId, parentId)) {
+                    // Portイベント追加・保存しない
+                    port.onMessage.addListener(message);
+                    port.onDisconnect.addListener(disconnect);
+
+                    data.observeUrlChange = false;
+                    port.postMessage({
+                        type : 'init_response',
+                        data : data
+                    });
+                }
+            }
+            // 親フレームがルートに存在しない
             for (let frame in FRAMES) {
-                // 子フレーム追加
-                if (FRAMES[frame].addFrameId(frameId, message.parentId)) {
+                // 全てのルートフレームを探してサブフレームに親フレームがあれば追加
+                if (FRAMES[frame].addFrameId(frameId, parentId)) {
                     // Portイベント追加・保存しない
                     port.onMessage.addListener(message);
                     port.onDisconnect.addListener(disconnect);
@@ -86,34 +102,36 @@ function connect(port)
 function message(message, port)
 {
     DEBUG && console.log('onmessage', message, port);
-    const frameId = parseInt(port.name);
+    const frameId = parseInt(port.name.split('-')[0]),
+          parentId = parseInt(port.name.split('-')[1]);
 
     switch (message.type) {
     case 'loaded':
         // 親フレームの場合
-        if (!FRAMES[frameId]) break;
-        // 読み込み完了
-        FRAMES[frameId]._loading = false;
+        if (parentId === 0) {
+            FRAMES[frameId].contentLoaded(message);
+        }
         break;
     case 'unload':
         // 子フレームの場合
-        if (FRAMES[frameId]) break;
-        // フレーム削除
-        for (let frame in FRAMES) {
-            if (FRAMES[frame].deleteFrameId(frameId)) break;
+        if (parentId !== 0) {
+            // フレーム削除
+            for (let frame in FRAMES) {
+                if (FRAMES[frame].deleteFrameId(frameId)) break;
+            }
         }
         break;
     case 'url_change':
         // 親フレームの場合
-        if (!FRAMES[frameId]) break;
-        // URL変更検知
-        FRAMES[frameId].href = message.data.url;
+        if (parentId === 0) {
+            FRAMES[frameId].contentUrlChanged(message);
+        }
         break;
     case 'url_load':
         for (let frame in FRAMES) {
             if (FRAMES[frame].showFrameIds().includes(frameId)) {
                 // 親フレームのURL遷移
-                FRAMES[frame].hrefLoad = message.data.url;
+                FRAMES[frame].load(message.data.url);
                 break;
             }
         }
@@ -126,7 +144,8 @@ function message(message, port)
 
 function disconnect(port) {
     DEBUG && console.log('ondisconnect', port);
-    const frameId = parseInt(port.name);
+    const frameId = parseInt(port.name.split('-')[0]),
+          parentId = parseInt(port.name.split('-')[1]);
 
     // 親フレーム
     if (FRAMES[frameId]) {

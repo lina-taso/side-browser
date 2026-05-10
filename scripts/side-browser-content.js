@@ -8,14 +8,13 @@
 const frameId  = parseInt(browser.runtime.getFrameId(window)),
       parentId = parseInt(browser.runtime.getFrameId(window.parent));
 
-if (frameId !== 0 && parentId !== 0) {
+if (frameId !== 0) {
 
     let loaded  = false,
         init    = false,
-        observe = false,
-        oldHref;
+        observe = false;
 
-    const port = browser.runtime.connect({ name: frameId.toString() });
+    const port = browser.runtime.connect({ name: frameId.toString() + '-' + parentId.toString() });
 
     const onmessage = (message) => {
         switch (message.type) {
@@ -46,10 +45,16 @@ if (frameId !== 0 && parentId !== 0) {
     const onload = () => {
         if (init) {
             // 読み込み完了通知
-            port.postMessage({ type : 'loaded' });
+            port.postMessage({
+                type : 'loaded',
+                data : {
+                    url : location.href
+                }
+            });
             // 監視
             if (observe) {
                 observer.observe(document.body, { childList : true, subtree : true });
+                navigation.addEventListener('navigate', onnavigate);
             }
 
             const onunload = () => {
@@ -64,18 +69,38 @@ if (frameId !== 0 && parentId !== 0) {
     window.addEventListener('load', onload);
 
     const observer = new MutationObserver(mutations => {
-        if (oldHref !== window.location.href) {
-            const before = oldHref;
-            oldHref = window.location.href;
+    });
+
+    const onnavigate = (e) => {
+        let destination = 0;
+        switch (e.navigationType) {
+        case 'traverse':
+            destination = e.destination.index - navigation.currentEntry.index;
             // URL変更通知
             port.postMessage({
                 type : 'url_change',
                 data : {
-                    url : oldHref
+                    url  : e.destination.url,
+                    type : e.navigationType,
+                    dest : destination,
+                    spa  : e.destination.sameDocument
                 }
             });
+            break;
+        case 'push':
+        case 'replace':
+            // URL変更通知
+            port.postMessage({
+                type : 'url_change',
+                data : {
+                    url  : e.destination.url,
+                    type : e.navigationType,
+                    spa  : e.destination.sameDocument
+                }
+            });
+            break;
         }
-    });
+    };
 
     const changeScreen = (width, height) => {
         const s = document.createElement('script');
@@ -107,6 +132,7 @@ if (frameId !== 0 && parentId !== 0) {
                             url : el.href
                         }
                     });
+                    e.preventDefault();
                     return false;
                 }
 
@@ -115,7 +141,12 @@ if (frameId !== 0 && parentId !== 0) {
                 const hrefDomain = (new URL(el.href)).hostname;
                 // 異ドメインの場合
                 if (!domainPattern.test(hrefDomain)) {
-                    window.location.href = el.href;
+                    port.postMessage({
+                        type : 'url_load',
+                        data : {
+                            url : el.href
+                        }
+                    });
                     e.preventDefault();
                     return false;
                 }
