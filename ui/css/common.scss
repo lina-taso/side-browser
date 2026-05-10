@@ -267,10 +267,10 @@ button {
         margin-bottom: 0;
     }
 
-    .browser-panel:last-child .menu-item.reset-height {
+    .browser-panel:last-child & .menu-item.reset-height {
         display: none;
     }
-    .browser-panel:first-child .menu-item.close-panel {
+    .browser-panel:first-child & .menu-item.close-panel {
         display: none;
     }
     .scale-bar {

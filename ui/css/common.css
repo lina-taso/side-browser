@@ -194,9 +194,9 @@ button {
     margin-top: 0; }
   .menu-container > *:last-child {
     margin-bottom: 0; }
-  .menu-container .browser-panel:last-child .menu-item.reset-height {
+  .browser-panel:last-child .menu-container .menu-item.reset-height {
     display: none; }
-  .menu-container .browser-panel:first-child .menu-item.close-panel {
+  .browser-panel:first-child .menu-container .menu-item.close-panel {
     display: none; }
   .menu-container .scale-bar {
     align-items: center;
