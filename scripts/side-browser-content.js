@@ -53,7 +53,6 @@ if (frameId !== 0) {
             });
             // 監視
             if (observe) {
-                observer.observe(document.body, { childList : true, subtree : true });
                 navigation.addEventListener('navigate', onnavigate);
             }
 
@@ -67,9 +66,6 @@ if (frameId !== 0) {
         }
     };
     window.addEventListener('load', onload);
-
-    const observer = new MutationObserver(mutations => {
-    });
 
     const onnavigate = (e) => {
         let destination = 0;
