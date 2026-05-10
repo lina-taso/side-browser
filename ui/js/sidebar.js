@@ -6,7 +6,7 @@
  */
 
 const FRAMEIDS = [],
-      // update common.scss, options.xhtml
+      // 要UPDATE options.xhtml
       scaleMin = 50,
       scaleMax = 150;
 let bg;
@@ -286,7 +286,7 @@ class frameUI {
 
         // webrequestイベント
         browser.webRequest.onBeforeRequest.addListener(
-            (details) => { this.webrequestBeforerequest(details); },
+            (details) => { this.webrequestBeforeRequest(details); },
             { urls : ['<all_urls>' ], types : ['sub_frame' ], tabId : -1 }
         );
         browser.webRequest.onHeadersReceived.addListener(
@@ -526,7 +526,7 @@ class frameUI {
         this._$menuContainer.fadeToggle();
         this._$menuContainer.siblings('.panel-veil').fadeToggle();
     }
-    //パネルveil
+    // パネルveil
     panelVeil() {
         this._$menuContainer.fadeOut();
         this._$changeHomePanel.fadeOut();
@@ -843,7 +843,8 @@ class frameUI {
 
     // 終了
     destroy() {
-        browser.webRequest.onBeforeRequest.removeListener(this.webrequestBeforerequest);
+        browser.webRequest.onBeforeRequest.removeListener(this.webrequestBeforeRequest);
+        browser.webRequest.onHeadersReceived.removeListener(this.webrequestHeadersReceived);
         browser.webRequest.onCompleted.removeListener(this.webrequestCompleted);
         browser.webRequest.onErrorOccurred.removeListener(this.webrequestErrorOccured);
     }
