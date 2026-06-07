@@ -195,7 +195,6 @@ function navigationAllPanel(dir)
 {
     const callerFrameId = this._frameId;
     FRAMEIDS.forEach(frameId => {
-        console.log(bg.FRAMES[frameId]);
         if (callerFrameId === frameId) return;
         bg.FRAMES[frameId].navigation2(dir);
     });
