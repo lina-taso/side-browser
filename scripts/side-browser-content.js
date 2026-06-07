@@ -8,22 +8,23 @@
 const frameId  = parseInt(browser.runtime.getFrameId(window)),
       parentId = parseInt(browser.runtime.getFrameId(window.parent));
 
-if (frameId !== 0 && parentId !== 0) {
+if (frameId !== 0) {
+
     let loaded  = false,
         init    = false,
-        observe = false,
-        // for side-twitter
-        updateInterval    = 600,
+        observe = false;
+
+    // for side-twitter
+    let updateInterval    = 600,
         removeAds         = false,
         removePremiumLink = false,
-        showFollowTlFirst = false,
-        // flag
-        waitingLoadHome   = false,
-        // state
-        oldHref;
+        showFollowTlFirst = false;
+    // flag
+    let waitingLoadHome = true;
+    let oldHref;
     let autoUpdateTimer;
 
-    const port = browser.runtime.connect({ name: frameId.toString() });
+    const port = browser.runtime.connect({ name: frameId.toString() + '-' + parentId.toString() });
 
     const onmessage = (message) => {
         switch (message.type) {
@@ -66,9 +67,17 @@ if (frameId !== 0 && parentId !== 0) {
     const onload = () => {
         if (init) {
             // 読み込み完了通知
-            port.postMessage({ type : 'loaded' });
+            port.postMessage({
+                type : 'loaded',
+                data : {
+                    url : location.href
+                }
+            });
             // 監視
             if (observe) {
+                navigation.addEventListener('navigate', onnavigate);
+
+                // for side-twitter
                 observer.observe(document.body, { childList : true, subtree : true });
             }
 
@@ -86,13 +95,15 @@ if (frameId !== 0 && parentId !== 0) {
     const observer = new MutationObserver(mutations => {
         // ホームタイムラインの読み込み待ち
         if (waitingLoadHome) {
-            // ホームタイムライン読み込み前にページ遷移
-            if (oldHref !== 'https://x.com/home')
-                waitingLoadHome = false;
+            // ホームタイムラインのURL
+            if (window.location.href === 'https://x.com/home') {
+                // Twitter自動更新タイマー更新
+                clearInterval(autoUpdateTimer);
+                autoUpdateTimer = setInterval(updateTimeline, updateInterval * 1000);
 
-            else {
                 // フォロータイムラインを表示
                 if (showFollowTlFirst) {
+                    // UIが存在
                     if (document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab]')) {
                         if (document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab][aria-selected=false]'))
                             document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab][aria-selected=false]').click();
@@ -100,38 +111,9 @@ if (frameId !== 0 && parentId !== 0) {
                     }
                 }
             }
-        }
-
-        // URL変更
-        if (oldHref !== window.location.href) {
-            const before = oldHref;
-            oldHref = window.location.href;
-            // URL変更通知
-            port.postMessage({
-                type : 'url_change',
-                data : {
-                    url : oldHref
-                }
-            });
-
-            if (oldHref === 'https://x.com/home') {
-                // Twitter自動更新
-                clearInterval(autoUpdateTimer);
-                autoUpdateTimer = setInterval(updateTimeline, updateInterval * 1000);
-
-                // フォロータイムラインを表示
-                if (showFollowTlFirst) {
-                    if (document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab]')) {
-                        if (document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab][aria-selected=false]'))
-                            document.querySelector('[role=tablist]:has([role=tab]) [role=presentation]:nth-child(2) [role=tab][aria-selected=false]').click();
-                    }
-                    else
-                        waitingLoadHome = true;
-                }
-            }
-            else {
-                clearInterval(autoUpdateTimer);
-            }
+            // ホームタイムライン以外のURL
+            else
+                waitingLoadHome = false;
         }
 
         // 広告削除
@@ -147,6 +129,41 @@ if (frameId !== 0 && parentId !== 0) {
             });
         }
     });
+
+    const onnavigate = (e) => {
+        let destination = 0;
+        switch (e.navigationType) {
+        case 'traverse':
+            destination = e.destination.index - navigation.currentEntry.index;
+            // URL変更通知
+            port.postMessage({
+                type : 'url_change',
+                data : {
+                    url  : e.destination.url,
+                    type : e.navigationType,
+                    dest : destination,
+                    spa  : e.destination.sameDocument
+                }
+            });
+            break;
+        case 'push':
+        case 'replace':
+            // URL変更通知
+            port.postMessage({
+                type : 'url_change',
+                data : {
+                    url  : e.destination.url,
+                    type : e.navigationType,
+                    spa  : e.destination.sameDocument
+                }
+            });
+            break;
+        }
+
+        // for side-twitter
+        if (e.destination.url === 'https://x.com/home')
+            waitingLoadHome = true;
+    };
 
     const changeScreen = (width, height) => {
         const s = document.createElement('script');
@@ -178,6 +195,7 @@ if (frameId !== 0 && parentId !== 0) {
                             url : el.href
                         }
                     });
+                    e.preventDefault();
                     return false;
                 }
 
@@ -186,7 +204,12 @@ if (frameId !== 0 && parentId !== 0) {
                 const hrefDomain = (new URL(el.href)).hostname;
                 // 異ドメインの場合
                 if (!domainPattern.test(hrefDomain)) {
-                    window.location.href = el.href;
+                    port.postMessage({
+                        type : 'url_load',
+                        data : {
+                            url : el.href
+                        }
+                    });
                     e.preventDefault();
                     return false;
                 }

@@ -7,7 +7,7 @@
         "url" : "https://www2.filewo.net/"
     },
     "description" : "__MSG_extensionDescription__",
-    "version" : "1.0.2",
+    "version" : "1.1.0",
     "browser_specific_settings" : {
         "gecko" : {
             "id" : "side-x-browser@filewo.net",
@@ -63,6 +63,7 @@
     "permissions" : [
         "browsingData",
         "webRequest",
+        "webRequestBlocking",
         "declarativeNetRequestWithHostAccess",
         "storage",
         "tabs",

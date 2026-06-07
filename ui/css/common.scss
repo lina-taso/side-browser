@@ -15,7 +15,8 @@
         --shadow-color: gray;
         --border-color: darkgray;
         --font-color: #202020;
-        --disabled-font-color: #808080;
+        --disabled-font-color: #whitesmoke;
+        --url-font-color: #808080;
     }
 }
 @media (prefers-color-scheme: dark) {
@@ -26,13 +27,15 @@
         --shadow-color: gray;
         --border-color: #777799;
         --font-color: #e1e1e1;
-        --disabled-font-color: #818181;
+        --disabled-font-color: #3c3c4d;
+        --url-font-color: #818181;
     }
 }
 
 html, body {
     width: 100%;
     height: 100%;
+    color: var(--font-color);
     background-color: var(--background-color);
 }
 
@@ -70,6 +73,9 @@ button {
     &:focus {
         background-color: var(--hover-background-color);
         outline: none;
+    }
+    &[disabled] {
+        color: var(--disabled-font-color);
     }
 }
 
@@ -163,6 +169,22 @@ button {
 .navigation-bar {
     margin: var(--spacing-bar);
 
+    .unmanageHistory {
+        font-size: 80%;
+        margin: 6px 0;
+        cursor: help;
+        &::before {
+            transform: rotate(-30deg);
+            display: block;
+        }
+
+        .browser-panel:only-of-type & {
+            display: none;
+        }
+        .browser-panel[data-manage-history="true"] & {
+            display: none;
+        }
+    }
     .prev {
     }
     .next {
@@ -224,7 +246,7 @@ button {
     overflow: hidden;
     white-space: nowrap;
     border-radius: 5px;
-    color: var(--disabled-font-color);
+    color: var(--url-font-color);
     background-color: var(--input-background-color);
     &:hover {
         background-color: var(--hover-background-color);
@@ -295,10 +317,10 @@ button {
         margin-bottom: 0;
     }
 
-    .browser-panel:last-child .menu-item.reset-height {
+    .browser-panel:last-child & .menu-item.reset-height {
         display: none;
     }
-    .browser-panel:first-child .menu-item.close-panel {
+    .browser-panel:first-child & .menu-item.close-panel {
         display: none;
     }
     .scale-bar {

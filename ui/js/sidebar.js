@@ -6,7 +6,7 @@
  */
 
 const FRAMEIDS = [],
-      // update common.scss, options.xhtml
+      // 要UPDATE options.xhtml
       scaleMin = 50,
       scaleMax = 150;
 let bg;
@@ -129,6 +129,8 @@ function initBrowserPanels()
 // ブラウザーフレームを追加
 function addBrowserPanel(panelSetting, position)
 {
+    // 履歴管理
+    const manageHistory = bg.config.getPref('manageHistory');
     // パネルを追加
     const $panel = $('.browser-panel.template').clone(true).removeClass('template').attr('id', panelSetting.id);
     // 末尾に追加
@@ -136,25 +138,23 @@ function addBrowserPanel(panelSetting, position)
     // positionに挿入
     else $panel.insertAfter($('#panel-container').children().eq(position-1));
 
-    $panel.find('iframe.browser')[0].contentWindow.addEventListener('load', (e) => {
-        const _window = e.currentTarget,
-              iframe  = _window.document.getElementById('inline-browser'),
-              frameId = browser.runtime.getFrameId(iframe);
-        $panel.attr('data-inner-frameid', frameId);
+    const iframe = $panel.find('iframe.browser')[0];
+    const frameId = browser.runtime.getFrameId(iframe);
+    $panel.attr('data-frameid', frameId);
+    $panel.attr('data-manage-history', manageHistory);
 
-        FRAMEIDS.push(frameId);
-        // background script
-        bg.FRAMES[frameId] = new frameUI($panel);
-        // settings
-        updateBrowserPanel(panelSetting);
-    });
+    FRAMEIDS.push(frameId);
+    // background script
+    bg.FRAMES[frameId] = new frameUI($panel);
+    // settings
+    updateBrowserPanel(panelSetting);
 }
 
 // ブラウザーフレームの更新
 function updateBrowserPanel(panelSetting)
 {
     const $panel  = $('#'+panelSetting.id),
-          frameId = parseInt($panel.attr('data-inner-frameid'));
+          frameId = parseInt($panel.attr('data-frameid'));
 
     // settings
     bg.FRAMES[frameId].height = panelSetting.height;
@@ -165,7 +165,7 @@ function updateBrowserPanel(panelSetting)
 function removeBrowserPanel(panelId)
 {
     const $panel = $('#'+panelId),
-          frameId = parseInt($panel.attr('data-inner-frameid'));
+          frameId = parseInt($panel.attr('data-frameid'));
 
     // パネルを削除
     $panel.remove();
@@ -177,28 +177,59 @@ function removeBrowserPanel(panelId)
     delete bg.FRAMES[frameId];
 }
 
+// 全フレーム操作（loading）
+function loadingAllPanel(bool)
+{
+    const callerFrameId = this._frameId;
+    FRAMEIDS.forEach(frameId => {
+        if (callerFrameId === frameId) return;
+        bg.FRAMES[frameId].loading2(bool);
+    });
+}
+
+// 全フレーム操作（navigation）
+function navigationAllPanel(dir)
+{
+    const callerFrameId = this._frameId;
+    FRAMEIDS.forEach(frameId => {
+        if (callerFrameId === frameId) return;
+        bg.FRAMES[frameId].navigation2(dir);
+    });
+}
+
 class frameUI {
     constructor($panel) {
-        this._$panel        = $panel;
-        this._frameId       = parseInt($panel.attr('data-inner-frameid'));
-        this._subframeIds   = [];
-        this._$iframe       = $panel.find('iframe.browser');
-        this._iframeWindow  = this._$iframe[0].contentWindow;
-        this._browserIframe = this._iframeWindow.document.getElementById('inline-browser');
-        this._browserWindow = this._browserIframe.contentWindow;
-        this._$handler      = $panel.find('.browser-panel-handler');
-        this._$menuContainer= $panel.find('.menu-container');
-        this._$copied       = $panel.find('.copied');
-        this._$scale        = $panel.find('.scale');
+        this._port             = undefined;
+        this._$panel           = $panel;
+        this._frameId          = parseInt($panel.attr('data-frameid'));
+        this._subframeIds      = [];
+        this._$iframe          = $panel.find('iframe.browser');
+        this._iframeWindow     = this._$iframe[0].contentWindow;
+        this._$handler         = $panel.find('.browser-panel-handler');
+        this._$menuContainer   = $panel.find('.menu-container');
+        this._$scale           = $panel.find('.scale');
+        this._$changeHomePanel = $panel.find('.popup-changeHomePanel');
+        this._url              = '';
+        this._lastUrl          = '';
+        this._history          = { index : -1,  urls : [] };
+        this._navigation       = 'none'; // none, prev, next, refresh
+
+        // for side-twitter
+        this._$copied = $panel.find('.copied');
         browser.windows.getCurrent().then((win) => { this._windowId = win.id; });
 
+        // ナビゲーションボタン
+        this._$prevButton    = $panel.find('button.prev');
+        this._$nextButton    = $panel.find('button.next');
+        this._$homeButton    = $panel.find('button.home');
+        this._$refreshButton = $panel.find('button.refresh');
+
         // ボタンイベント
-        $panel.find('button.prev').on('click', () => { this.prev(); });
-        $panel.find('button.next').on('click', () => { this.next(); });
-        $panel.find('button.home').on('click', () => { this.home(); });
-        $panel.find('button.refresh').on('click', () => { this.refresh(); });
-        $panel.find('button.copy-url').on('click', () => { this.copyUrl(); });
-        $panel.find('button.share').on('click', () => { this.share(); });
+        this._$prevButton.on('click', () => { this.prev(); });
+        this._$nextButton.on('click', () => { this.next(); });
+        this._$homeButton.on('click', () => { this.home(); });
+        this._$refreshButton.on('click', () => { this.refresh(); });
+        $panel.find('button.run').on('click', () => { this.run(); });
         $panel.find('button.menu').on('click', () => { this.menu(); });
         $panel.find('.panel-veil').on('click', () => { this.panelVeil(); });
         $panel.find('button.scale-minus').on('click', e => { this.scaleMinus(e); });
@@ -206,6 +237,12 @@ class frameUI {
         $panel.find('button.scale').on('click', e => { this.scaleReset(e); });
         $panel.find('button.open-option').on('click', () => { this.openOption(); });
         $panel.find('button.open-tab').on('click', () => { this.openTab(); });
+
+        // for side-twitter
+        this._$copyUrlButton = $panel.find('button.copy-url');
+        this._$shareButton   = $panel.find('button.share');
+        this._$copyUrlButton.on('click', () => { this.copyUrl(); });
+        this._$shareButton.on('click', () => { this.share(); });
 
         // アドレスバー
         $panel.find('.textbox.address').on('keypress', e => {
@@ -217,15 +254,50 @@ class frameUI {
             .on('mousedown', () => { this.mousedownHandler(); })
             .on('mousemove', (e) => { this.mousemoveHandler(e); })
             .on('mouseup mouseout', () => { this.mouseupHandler(); });
+        // 読み込まれないURL対応
+        this._$iframe.on('load', () => {
+            try {
+                const address = this._iframeWindow.location.href;
+                // 履歴管理モード
+                if (this.manageHistory) {
+                    // 履歴管理
+                    switch (this.navigation) {
+                    case 'prev':
+                        this.prevHistory();
+                        break;
+                    case 'next':
+                        this.nextHistory();
+                        break;
+                    default:
+                        // 新規ページ遷移
+                        this.pushHistory(address);
+                    }
+                    this.navigation = 'none';
+                }
+                // URL変更
+                this.address = address;
+                this.location = address;
+            }
+            catch {}
+        });
+
+        this.loadingAllPanel = loadingAllPanel.bind(this);
+        this.navigationAllPanel = navigationAllPanel.bind(this);
 
         // webrequestイベント
         browser.webRequest.onBeforeRequest.addListener(
-            (details) => { this.webrequestBeforerequest(details); },
+            (details) => { this.webrequestBeforeRequest(details); },
             { urls : ['https://x.com/*' ], types : ['sub_frame' ], tabId : -1 }
+        );
+        browser.webRequest.onHeadersReceived.addListener(
+            (details) => { this.webrequestHeadersReceived(details); },
+            { urls : ['<all_urls>' ], types : ['sub_frame' ], tabId : -1 },
+            ['responseHeaders', 'blocking']
         );
         browser.webRequest.onCompleted.addListener(
             (details) => { this.webrequestCompleted(details); },
-            { urls : ['https://x.com/*' ], types : ['sub_frame' ], tabId : -1 }
+            { urls : ['https://x.com/*' ], types : ['sub_frame' ], tabId : -1 },
+            ['responseHeaders']
         );
         browser.webRequest.onErrorOccurred.addListener(
             (details) => { this.webrequestErrorOccured(details); },
@@ -237,25 +309,62 @@ class frameUI {
     }
 
     // アドレスバー更新
-    set href(address) {
+    set address(address) {
         this._$panel.find('.address').text(address);
     }
-    // アドレスバー更新後読み込み
-    set hrefLoad(address) {
-        this.href = address;
-        this._browserWindow.location.href = address;
-    }
     // アドレスバー取得
-    get href() {
+    get address() {
         return this._$panel.find('.address').text();
     }
+    // 表示中ロケーション更新
+    set location(url) {
+        this._url = url;
+    }
+    // 表示中ロケーション
+    get location() {
+        return this._url;
+    }
     // 読み込み中設定
-    set _loading(bool) {
-        this._$panel.attr('data-loading', bool.toString());
+    set loading(bool) {
+        this.loading2(bool);
+
+        // ブラウザ標準モード
+        if (!this.manageHistory) {
+            this.loadingAllPanel(bool);
+        }
     }
     // 読み込み中取得
     get loading() {
         return this._$panel.attr('data-loading') === 'true';
+    }
+    // 読み込み中ステータス更新
+    loading2(bool) {
+        this._$panel.attr('data-loading', bool.toString());
+        this._$prevButton.prop('disabled', bool);
+        this._$nextButton.prop('disabled', bool);
+    }
+    // 履歴管理取得
+    get manageHistory() {
+        return this._$panel.attr('data-manage-history') === 'true';
+    }
+    // ナビゲーション中設定
+    set navigation(dir) {
+        this.navigation2(dir);
+
+        // ブラウザ標準モード
+        if (!this.manageHistory) {
+            this.navigationAllPanel(dir);
+        }
+    }
+    // ナビゲーション中取得
+    get navigation() {
+        return this._navigation;
+    }
+    // ナビゲーションステータス更新
+    navigation2(dir) {
+        this._navigation = dir;
+        this._$prevButton.prop('disabled', dir !== 'none');
+        this._$nextButton.prop('disabled', dir !== 'none');
     }
     // 拡大率
     set scale(ratio) {
@@ -282,36 +391,135 @@ class frameUI {
         const settings = JSON.parse(bg.config.getPref('panelSettings'));
         return settings.filter(e => e.id === this._$panel[0].id)[0];
     }
+    // アドレスバー更新後読み込み
+    addressLoad(address) {
+        this.address = address;
+        this.load(address);
+    }
+    // 読み込み
+    load(address) {
+        this.lastUrl = address;
+        this._iframeWindow.location.href = address;
+    }
+    // 履歴管理（追加）
+    pushHistory(url, type) {
+        // URLが同じ場合は履歴追加せずタイプのみ更新
+        if (this.location && new URL(this.location).href === new URL(url).href) {
+            this._history.urls[this._history.index].type = type;
+            return;
+        }
+
+        const i = ++this._history.index;
+        this._history.urls.splice(i, Infinity, { url : url, type : type });
+    }
+    // 履歴管理（変更）
+    replaceHistory(url) {
+        if (this._history.index <= 0) return;
+        const i    = this._history.index,
+              type = this._history.urls[i].type;
+        this._history.urls.splice(i, 1, { url : url, type : type });
+    }
+    // 履歴管理（戻る）
+    prevHistory() {
+        if (this._history.index <= 0) return undefined;
+        const i = --this._history.index;
+        return this._history.urls[i].url;
+    }
+    // 履歴管理（次へ）
+    nextHistory() {
+        if (this._history.index >= this._history.urls.length-1) return undefined;
+        const i = ++this._history.index;
+        return this._history.urls[i].url;
+    }
+    // 履歴管理（取得）
+    getHistory(av) {
+        const ti = this._history.index + av;
+        if (this._history.urls[ti]) return this._history.urls[ti];
+        else return undefined;
+    }
 
     // 戻るボタン
     prev() {
-        this._iframeWindow.history.back();
+        if (this.navigation !== 'none') return;
+
+        // ブラウザ標準モード
+        if (!this.manageHistory) {
+            // 戻る
+            history.back();
+        }
+        // 履歴管理モード
+        else {
+            const prevUrl = this.getHistory(-1);
+            // 履歴なし
+            if (!prevUrl) return;
+            if (prevUrl.type === 'error') {
+                this.prevHistory();
+                this.navigation = 'none';
+                this.address = prevUrl.url;
+                this.location = prevUrl.url;
+            }
+            else {
+                this.navigation = 'prev';
+            }
+            this.load(prevUrl.url);
+        }
     }
     // 次へボタン
     next() {
-        this._iframeWindow.history.forward();
+        if (this.navigation !== 'none') return;
+
+        // ブラウザ標準モード
+        if (!this.manageHistory) {
+            // 進む
+            history.forward();
+        }
+        // 履歴管理モード
+        else {
+            const nextUrl = this.getHistory(1);
+            // 履歴なし
+            if (!nextUrl) return;
+            if (nextUrl.type === 'error') {
+                this.nextHistory();
+                this.navigation = 'none';
+                this.address = nextUrl.url;
+                this.location = nextUrl.url;
+            }
+            else {
+                this.navigation = 'next';
+            }
+            this.load(nextUrl.url);
+        }
     }
     // ホームボタン
     home() {
-        this.href = this.config.home;
+        this.address = this.config.home;
         this.run();
     }
     // 再読込・中断ボタン
-    refresh() {
-        if (this.loading) {
-            return;
+    refresh(cancel) {
+        // 中断
+        if (cancel || this.loading) {
+            // URLが同じ場合 indexは変わらない（pushHistoryと連動）
+            if (this.location && new URL(this.location).href === new URL(this.lastUrl).href)
+                this._iframeWindow.location.href = 'about:blank?' + this._history.index;
+            // URLが異なる場合 indexが増える
+            else
+                this._iframeWindow.location.href = 'about:blank?' + (this._history.index + 1);
+            this.loading = false;
         }
+        // 再読み込み
         else {
-            this.run();
+            this.navigation = 'refresh';
+            this.addressLoad(this.location);
         }
     }
     // 実行ボタン
     run() {
-        let url = this.href;
+        let url = this.address;
         if (!url) return;
         if (!/^\w+:\/\//.test(url) && !/^about:/.test(url))
             url = (bg.config.getPref('appendHttps') ? 'https://' : 'http://') + url;
-        this.hrefLoad = url;
+        this.addressLoad(url);
     }
     // URLコピー
     copyUrl() {
@@ -323,10 +531,9 @@ class frameUI {
     // ページ共有
     share() {
         browser.tabs.query({ active : true, currentWindow : true }).then((tabs) => {
-            bg.console.log(tabs);
-            this.hrefLoad = 'https://x.com/compose/post?'
-                + 'text=' + encodeURIComponent(tabs[0].title)
-                + '&url=' + encodeURIComponent(tabs[0].url);
+            this.addressLoad('https://x.com/compose/post?'
+                             + 'text=' + encodeURIComponent(tabs[0].title)
+                             + '&url=' + encodeURIComponent(tabs[0].url));
         });
     }
     // メニューボタン
@@ -334,7 +541,7 @@ class frameUI {
         this._$menuContainer.fadeToggle();
         this._$menuContainer.siblings('.panel-veil').fadeToggle();
     }
-    //パネルveil
+    // パネルveil
     panelVeil() {
         this._$menuContainer.fadeOut();
         this._$menuContainer.siblings('.panel-veil').fadeOut();
@@ -399,27 +606,132 @@ class frameUI {
     openTab() {
         this._$menuContainer.fadeOut();
         this._$menuContainer.siblings('.panel-veil').fadeOut();
-        browser.tabs.create({ url : this.href });
+        browser.tabs.create({ url : this.location });
     }
 
-    // webrequestイベント
-    webrequestBeforerequest(details) {
+    // webrequestイベント（リクエスト前）
+    webrequestBeforeRequest(details) {
         if (details.frameId === this._frameId) {
-            this._loading = true;
-            this.href = details.url;
+            this.loading = true;
         }
     }
-    // webrequestイベント
+    // webrequestイベント（ヘッダー受信時）
+    webrequestHeadersReceived(details) {
+        if (details.frameId === this._frameId) {
+            if (details.statusCode < 200 || details.statusCode >= 300) return true;
+            // ファイルダウンロード時の挙動
+            const ctHeader = details.responseHeaders.filter(h => h.name.toLowerCase() === 'content-type');
+            if (ctHeader.length === 0 || !/text\/html/i.test(ctHeader[0].value)) {
+                // 中止
+                this.refresh(true);
+                // タブで開く
+                browser.tabs.create({ url : details.url });
+
+                // 可能な限りheaders改変
+                const exClHeader = details.responseHeaders.filter(h => h.name.toLowerCase() !== 'content-length');
+                exClHeader.push({ name : 'content-length', value : '0' });
+                return exClHeader;
+            }
+        }
+        return true;
+    }
+    // webrequestイベント（完了時）
     webrequestCompleted(details) {
         if (details.frameId === this._frameId) {
-            this._loading = false;
+            // 履歴管理
+            switch (this.navigation) {
+            case 'prev':
+                this.prevHistory();
+                break;
+            case 'next':
+                this.nextHistory();
+                break;
+            default:
+                // 新規ページ遷移
+                this.pushHistory(details.url);
+            }
+            this.navigation = 'none';
+            // URL変更
+            this.address = details.url;
+            this.location = details.url;
         }
     }
-    // webrequestイベント
+    // webrequestイベント（失敗時）
     webrequestErrorOccured(details) {
-        //console.log(details);
         if (details.frameId === this._frameId) {
-            this._loading = false;
+            this.loading = false;
+            // 履歴管理
+            switch (this.navigation) {
+            case 'prev':
+                this.prevHistory();
+                break;
+            case 'next':
+                this.nextHistory();
+                break;
+            default:
+                // 新規ページ遷移
+                this.pushHistory(details.url, 'error');
+            }
+            this.navigation = 'none';
+            // URL変更
+            this.address = details.url;
+            this.location = details.url;
+        }
+    }
+
+    // content-script loaded
+    contentLoaded(message) {
+        this.loading = false;
+        // 履歴管理
+        switch (this.navigation) {
+        case 'prev':
+            this.prevHistory();
+            break;
+        case 'next':
+            this.nextHistory();
+            break;
+        default:
+            // 新規ページ遷移
+            this.pushHistory(message.data.url);
+        }
+        this.navigation = 'none';
+        // URL変更
+        this.address = message.data.url;
+        this.location = message.data.url;
+    }
+    // content-script url_change
+    contentUrlChanged(message) {
+        if (!message.data.spa) return;
+        switch (message.data.type) {
+        case 'push':
+            // 履歴管理
+            this.pushHistory(message.data.url, 'navigation');
+            // URL変更
+            this.address = message.data.url;
+            this.location = message.data.url;
+            break;
+        case 'replace':
+            // 履歴管理
+            this.replaceHistory(message.data.url);
+            // URL変更
+            this.address = message.data.url;
+            this.location = message.data.url;
+            break;
+        case 'traverse':
+            // 戻る
+            if (message.data.dest < 0) {
+                this.prevHistory();
+                this.navigation = 'none';
+            }
+            // 次へ
+            else if (message.data.dest > 0) {
+                this.nextHistory();
+                this.navigation = 'none';
+            }
+            // URL変更
+            this.address = message.data.url;
+            this.location = message.data.url;
+            break;
         }
     }
 
@@ -429,6 +741,9 @@ class frameUI {
         parentId = parseInt(parentId);
         // parentIdが存在するか
         if (this.showFrameIds().includes(parentId)) {
+            // 既に存在する
+            if (this.showFrameIds().includes(frameId)) return false;
+            // 追加
             this._subframeIds.push(frameId);
             return true;
         }
@@ -450,7 +765,8 @@ class frameUI {
 
     // 終了
     destroy() {
-        browser.webRequest.onBeforeRequest.removeListener(this.webrequestBeforerequest);
+        browser.webRequest.onBeforeRequest.removeListener(this.webrequestBeforeRequest);
+        browser.webRequest.onHeadersReceived.removeListener(this.webrequestHeadersReceived);
         browser.webRequest.onCompleted.removeListener(this.webrequestCompleted);
         browser.webRequest.onErrorOccurred.removeListener(this.webrequestErrorOccured);
     }

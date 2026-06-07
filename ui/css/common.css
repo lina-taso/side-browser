@@ -12,7 +12,8 @@
     --shadow-color: gray;
     --border-color: darkgray;
     --font-color: #202020;
-    --disabled-font-color: #808080; } }
+    --disabled-font-color: #whitesmoke;
+    --url-font-color: #808080; } }
 @media (prefers-color-scheme: dark) {
   :root {
     --background-color: #282833;
@@ -21,10 +22,12 @@
     --shadow-color: gray;
     --border-color: #777799;
     --font-color: #e1e1e1;
-    --disabled-font-color: #818181; } }
+    --disabled-font-color: #3c3c4d;
+    --url-font-color: #818181; } }
 html, body {
   width: 100%;
   height: 100%;
+  color: var(--font-color);
   background-color: var(--background-color); }
 
 body {
@@ -57,6 +60,8 @@ button {
   button:focus {
     background-color: var(--hover-background-color);
     outline: none; }
+  button[disabled] {
+    color: var(--disabled-font-color); }
 
 .fa-solid {
   font-size: 16px; }
@@ -124,6 +129,17 @@ button {
 
 .navigation-bar {
   margin: var(--spacing-bar); }
+  .navigation-bar .unmanageHistory {
+    font-size: 80%;
+    margin: 6px 0;
+    cursor: help; }
+    .navigation-bar .unmanageHistory::before {
+      transform: rotate(-30deg);
+      display: block; }
+    .browser-panel:only-of-type .navigation-bar .unmanageHistory {
+      display: none; }
+    .browser-panel[data-manage-history="true"] .navigation-bar .unmanageHistory {
+      display: none; }
   .browser-panel[data-loading="false"] .navigation-bar .refresh .fa-xmark {
     display: none; }
   .browser-panel[data-loading="true"] .navigation-bar .refresh .fa-rotate-right {
@@ -164,7 +180,7 @@ button {
   overflow: hidden;
   white-space: nowrap;
   border-radius: 5px;
-  color: var(--disabled-font-color);
+  color: var(--url-font-color);
   background-color: var(--input-background-color); }
   .address:hover, .homeURL:hover {
     background-color: var(--hover-background-color); }
@@ -219,9 +235,9 @@ button {
     margin-top: 0; }
   .menu-container > *:last-child {
     margin-bottom: 0; }
-  .menu-container .browser-panel:last-child .menu-item.reset-height {
+  .browser-panel:last-child .menu-container .menu-item.reset-height {
     display: none; }
-  .menu-container .browser-panel:first-child .menu-item.close-panel {
+  .browser-panel:first-child .menu-container .menu-item.close-panel {
     display: none; }
   .menu-container .scale-bar {
     align-items: center;
