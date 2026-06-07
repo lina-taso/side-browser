@@ -367,7 +367,11 @@ class frameUI {
     }
     // 拡大率
     set scale(ratio) {
-        this._$iframe.css('zoom', (ratio || 100)/100);
+        this._$iframe.css({
+            transform : 'scale(' + (ratio || 100)/100 + ')',
+            width     : 'calc(100%/' + (ratio || 100)/100 + ')',
+            height    : 'calc(100%/' + (ratio || 100)/100 + ')'
+        });
         this._$scale.text(ratio || 100);
     }
     // パネル高さ
